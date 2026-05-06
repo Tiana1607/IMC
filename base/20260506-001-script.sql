@@ -36,9 +36,6 @@ CREATE TABLE users (
     last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_email (email),
-    INDEX idx_is_admin (is_admin)
 );
 
 -- ============================================================================
@@ -59,9 +56,6 @@ CREATE TABLE regimes (
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_name (name),
-    INDEX idx_is_active (is_active)
 );
 
 -- ============================================================================
@@ -79,8 +73,6 @@ CREATE TABLE activities (
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_intensity (intensity)
 );
 
 -- ============================================================================
@@ -93,7 +85,6 @@ CREATE TABLE wallets (
     balance DECIMAL(10, 2) NOT NULL DEFAULT 0.00 CHECK (balance >= 0),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -111,10 +102,7 @@ CREATE TABLE promo_codes (
     description VARCHAR(255),
     expires_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (used_by_user_id) REFERENCES users(id) ON DELETE SET NULL,
-    INDEX idx_code (code),
-    INDEX idx_is_used (is_used)
+    FOREIGN KEY (used_by_user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 -- ============================================================================
@@ -132,13 +120,9 @@ CREATE TABLE user_regimes (
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (regime_id) REFERENCES regimes(id) ON DELETE RESTRICT,
-    UNIQUE (user_id, regime_id, purchased_at),
-    INDEX idx_user_id (user_id),
-    INDEX idx_regime_id (regime_id),
-    INDEX idx_active (is_active)
+    UNIQUE (user_id, regime_id, purchased_at)
 );
 
 -- ============================================================================
@@ -155,12 +139,8 @@ CREATE TABLE user_activities (
     is_completed BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE RESTRICT,
-    INDEX idx_user_id (user_id),
-    INDEX idx_activity_id (activity_id),
-    INDEX idx_is_completed (is_completed)
+    FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE RESTRICT
 );
 
 -- ============================================================================
@@ -175,7 +155,6 @@ CREATE TABLE parameters (
     updated_by INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
     FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET NULL
 );
 

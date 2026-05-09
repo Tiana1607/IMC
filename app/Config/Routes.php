@@ -31,6 +31,7 @@ $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
 // Admin routes
 $routes->get('admin', 'Admin\\DashboardController::index', ['filter' => 'auth']);
 $routes->post('admin', 'Admin\\DashboardController::index', ['filter' => 'auth']);
+$routes->get('admin/ajax_activities', 'Admin\\DashboardController::ajaxActivities', ['filter' => 'auth']);
 
 $routes->get('admin/regimes', 'Admin\\RegimeController::index', ['filter' => 'auth']);
 $routes->post('admin/regimes', 'Admin\\RegimeController::store', ['filter' => 'auth']);

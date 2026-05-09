@@ -119,6 +119,14 @@
                         <h2 class="fw-bold mb-2 text-dark">Calculons vos besoins</h2>
                         <p class="text-secondary mb-4">Entre tes métriques pour finaliser ton profil.</p>
 
+                        <?php $errors = session()->getFlashdata('errors') ?? []; ?>
+
+                        <?php if (session()->getFlashdata('error')): ?>
+                            <div class="alert alert-danger border-0 rounded-3 mb-3">
+                                <?= esc(session()->getFlashdata('error')) ?>
+                            </div>
+                        <?php endif; ?>
+
                         <!-- Mobile BMI Card (visible on small screens) - compact with SVG ring -->
                         <div class="d-lg-none mb-4">
                             <div class="border rounded-3 p-3 bg-white" style="box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
@@ -160,14 +168,18 @@
                                 <div class="col-6">
                                     <label for="height" class="form-label fw-semibold">Taille (cm)</label>
                                     <input type="number" class="form-control metric-input" id="height" name="height"
-                                        placeholder="175" required min="100" max="250">
-                                    <div class="invalid-feedback d-none"></div>
+                                        placeholder="175" required min="100" max="250" value="<?= old('height') ?>">
+                                    <?php if (isset($errors['height'])): ?>
+                                        <div class="text-danger small mt-1"><?= esc($errors['height']) ?></div>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="col-6">
                                     <label for="weight" class="form-label fw-semibold">Poids (kg)</label>
                                     <input type="number" class="form-control metric-input" id="weight" name="weight"
-                                        placeholder="70" required min="30" max="300" step="0.1">
-                                    <div class="invalid-feedback d-none"></div>
+                                        placeholder="70" required min="30" max="300" step="0.1" value="<?= old('weight') ?>">
+                                    <?php if (isset($errors['weight'])): ?>
+                                        <div class="text-danger small mt-1"><?= esc($errors['weight']) ?></div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
@@ -175,8 +187,10 @@
                             <div class="mb-3">
                                 <label for="age" class="form-label fw-semibold">Âge</label>
                                 <input type="number" class="form-control metric-input" id="age" name="age"
-                                    placeholder="28" required min="13" max="120">
-                                <div class="invalid-feedback d-none"></div>
+                                    placeholder="28" required min="13" max="120" value="<?= old('age') ?>">
+                                <?php if (isset($errors['age'])): ?>
+                                    <div class="text-danger small mt-1"><?= esc($errors['age']) ?></div>
+                                <?php endif; ?>
                             </div>
 
                             <!-- Goal Selection -->
@@ -186,7 +200,7 @@
                                     <!-- Option 1 -->
                                     <div class="form-check goal-choice">
                                         <input class="form-check-input goal-input" type="radio" name="goal"
-                                            id="goal_gain" value="augmenter_poids">
+                                            id="goal_gain" value="augmenter_poids" <?= old('goal', 'imc_ideal') === 'augmenter_poids' ? 'checked' : '' ?>>
                                         <label class="form-check-label w-100 p-3 border rounded-2 cursor-pointer"
                                             for="goal_gain" data-goal="augmenter_poids">
                                             <div class="d-flex gap-3">
@@ -205,7 +219,7 @@
                                     <!-- Option 2 -->
                                     <div class="form-check goal-choice">
                                         <input class="form-check-input goal-input" type="radio" name="goal"
-                                            id="goal_reduce" value="reduire_poids">
+                                            id="goal_reduce" value="reduire_poids" <?= old('goal', 'imc_ideal') === 'reduire_poids' ? 'checked' : '' ?>>
                                         <label class="form-check-label w-100 p-3 border rounded-2 cursor-pointer"
                                             for="goal_reduce" data-goal="reduire_poids">
                                             <div class="d-flex gap-3">
@@ -224,7 +238,7 @@
                                     <!-- Option 3 -->
                                     <div class="form-check goal-choice">
                                         <input class="form-check-input goal-input" type="radio" name="goal"
-                                            id="goal_ideal" value="imc_ideal" checked>
+                                            id="goal_ideal" value="imc_ideal" <?= old('goal', 'imc_ideal') === 'imc_ideal' ? 'checked' : '' ?>>
                                         <label class="form-check-label w-100 p-3 border rounded-2 cursor-pointer"
                                             for="goal_ideal" data-goal="imc_ideal">
                                             <div class="d-flex gap-3">
@@ -240,6 +254,9 @@
                                         </label>
                                     </div>
                                 </div>
+                                <?php if (isset($errors['goal'])): ?>
+                                    <div class="text-danger small mt-2"><?= esc($errors['goal']) ?></div>
+                                <?php endif; ?>
                             </div>
 
                             <!-- CTA Buttons -->

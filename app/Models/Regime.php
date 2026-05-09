@@ -28,7 +28,7 @@ class Regime extends Model
     protected $updatedField = 'updated_at';
 
     /**
-     * Get regimes by objective
+     * récupère les régimes par objectif
      */
     public function getByObjective($objective)
     {
@@ -39,7 +39,7 @@ class Regime extends Model
     }
 
     /**
-     * Get regime with all objectives
+     * get regimes avec tous les objectifs
      */
     public function getWithObjectives($regime_id)
     {
@@ -53,7 +53,7 @@ class Regime extends Model
     }
 
     /**
-     * Add objective to regime
+     * ajoute l'objectif au regime
      */
     public function addObjective($regime_id, $objective)
     {
@@ -65,7 +65,7 @@ class Regime extends Model
     }
 
     /**
-     * Remove objective from regime
+     * supprime les objectif du regime
      */
     public function removeObjective($regime_id, $objective)
     {
@@ -76,7 +76,7 @@ class Regime extends Model
     }
 
     /**
-     * Get all active regimes for recommendations
+     * prends tous les regimes actif depuis la recommendations
      */
     public function getActiveRegimes()
     {

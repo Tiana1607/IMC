@@ -76,6 +76,11 @@ Priorités : 1) Auth + Users + BD, 2) Régimes/Activités + CRUD + Admin, 3) Das
      - Champs : `id`, `name`, `description`, `calorie_target`, `price_per_week`, `duration_weeks`, `weight_change_percent`, `meat_percent`, `fish_percent`, `poultry_percent`, `created_at`, `updated_at`
    - Activités : `app/Models/Activity.php` + migration
      - Champs : `id`, `name`, `description`, `calories_per_hour`, `intensity` (low/medium/high), `equipment_needed`, `created_at`, `updated_at`
+   - **Objectives Liaison (NEW)** :
+     - `regime_objectives` : junction table (regime_id, objective) — lie chaque régime aux objectifs supportés (loss/gain/ideal)
+     - `activity_objectives` : junction table (activity_id, objective) — lie chaque activité aux objectifs supportés
+     - Models : `app/Models/RegimeObjective.php`, `app/Models/ActivityObjective.php` avec helpers : `getRegimesByObjective()`, `getActivitiesByObjective()`, `hasObjective()`
+   - **Avantage** : Flexible (un régime peut supporter plusieurs objectifs) + filtrage facile en BD
 
 2. **Contrôleurs Admin CRUD**
    - `app/Controllers/Admin/RegimeController.php` — list, create, edit, update, delete
@@ -336,8 +341,8 @@ Priorités : 1) Auth + Users + BD, 2) Régimes/Activités + CRUD + Admin, 3) Das
 
 | Catégorie | Fichiers |
 |-----------|----------|
-| **Migrations** | `2026-05-XX-*_CreateUsersTable.php`, `..._CreateRegimesTable.php`, `..._CreateActivitiesTable.php`, `..._CreateWalletsTable.php`, `..._CreatePromoCodesTable.php`, `..._CreateUserRegimesTable.php` |
-| **Modèles** | `User.php`, `Regime.php`, `Activity.php`, `Wallet.php`, `PromoCode.php`, `UserRegime.php` |
+| **Migrations** | `2026-05-XX-*_CreateUsersTable.php`, `..._CreateRegimesTable.php`, `..._CreateActivitiesTable.php`, `..._CreateWalletsTable.php`, `..._CreatePromoCodesTable.php`, `..._CreateUserRegimesTable.php`, `..._CreateRegimeObjectivesTable.php`, `..._CreateActivityObjectivesTable.php` |
+| **Modèles** | `User.php`, `Regime.php`, `Activity.php`, `Wallet.php`, `PromoCode.php`, `UserRegime.php`, `RegimeObjective.php`, `ActivityObjective.php` |
 | **Contrôleurs** | `Auth.php`, `Dashboard.php`, `WalletController.php`, `Admin/RegimeController.php`, `Admin/ActivityController.php`, `Admin/DashboardController.php`, `PdfController.php` |
 | **Filtres** | `AuthFilter.php`, `AdminFilter.php` |
 | **Vues** | `layout/main.php`, `auth/{register_*,login}.php`, `dashboard/index.php`, `admin/{regime,activity,dashboard}.php` |

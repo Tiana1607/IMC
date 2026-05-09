@@ -219,7 +219,7 @@ class DashboardController extends BaseController
         $hasRegimes = $db->tableExists('regimes');
 
         $builder = $db->table('users u')
-            ->select('u.id, u.name, u.email, u.last_login, u.is_admin, u.objective, u.is_active');
+            ->select('u.id, u.name, u.email, u.gender, u.height_cm, u.weight_kg, u.age, u.objective, u.imc_value, u.imc_category, u.wallet_balance, u.is_gold, u.is_admin, u.is_active, u.created_at, u.updated_at, u.last_login');
 
         if ($hasUserRegimes) {
             $builder->select('ur.is_active AS regime_is_active')

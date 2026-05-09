@@ -15,6 +15,18 @@ if (!function_exists('admin_dashboard_initials')) {
     }
 }
 
+if (!function_exists('admin_dashboard_gender_label')) {
+    function admin_dashboard_gender_label(?string $gender): string
+    {
+        return match (strtoupper(trim((string) $gender))) {
+            'M' => 'Homme',
+            'F' => 'Femme',
+            'O' => 'Autre',
+            default => 'Non renseigné',
+        };
+    }
+}
+
 if (!function_exists('admin_dashboard_time_ago')) {
     function admin_dashboard_time_ago(?string $dateTime): string
     {
@@ -55,9 +67,21 @@ if (!function_exists('admin_dashboard_time_ago')) {
         $objectiveLabel = (string) ($activity['objective_label'] ?? 'Objectif non défini');
         $planLabel = (string) ($activity['plan_label'] ?? $objectiveLabel);
         $planHint = (string) ($activity['plan_hint'] ?? 'Aucun plan acheté');
+        $genderLabel = admin_dashboard_gender_label($activity['gender'] ?? null);
         $isActive = (int) ($activity['is_active'] ?? 0) === 1;
+        $isGold = (int) ($activity['is_gold'] ?? 0) === 1;
         $lastLogin = admin_dashboard_time_ago($activity['last_login'] ?? null);
         $initials = admin_dashboard_initials($name);
+        $height = (string) ($activity['height_cm'] ?? '');
+        $weight = (string) ($activity['weight_kg'] ?? '');
+        $age = (string) ($activity['age'] ?? '');
+        $imcValue = array_key_exists('imc_value', $activity) && $activity['imc_value'] !== null ? number_format((float) $activity['imc_value'], 2, ',', ' ') : 'N/D';
+        $imcCategory = (string) ($activity['imc_category'] ?? 'N/D');
+        $walletBalance = number_format((float) ($activity['wallet_balance'] ?? 0), 2, ',', ' ');
+        $createdAt = (string) ($activity['created_at'] ?? '');
+        $updatedAt = (string) ($activity['updated_at'] ?? '');
+        $lastLoginRaw = (string) ($activity['last_login'] ?? '');
+        $userId = (string) ($activity['id'] ?? '');
         ?>
         <tr>
             <td>
@@ -91,7 +115,31 @@ if (!function_exists('admin_dashboard_time_ago')) {
             </td>
             <td><?= esc($lastLogin) ?></td>
             <td>
-                <a href="#" style="color: var(--primary-green); text-decoration: none; font-weight: 600;">Gérer</a>
+                <button type="button"
+                    class="btn btn-link p-0 js-open-user-modal"
+                    style="color: var(--primary-green); text-decoration: none; font-weight: 600;"
+                    data-user-id="<?= esc($userId) ?>"
+                    data-user-name="<?= esc($name) ?>"
+                    data-user-email="<?= esc($email) ?>"
+                    data-user-gender="<?= esc((string) ($activity['gender'] ?? '')) ?>"
+                    data-user-gender-label="<?= esc($genderLabel) ?>"
+                    data-user-age="<?= esc($age) ?>"
+                    data-user-height="<?= esc($height) ?>"
+                    data-user-weight="<?= esc($weight) ?>"
+                    data-user-objective="<?= esc((string) ($activity['objective'] ?? '')) ?>"
+                    data-user-objective-label="<?= esc($objectiveLabel) ?>"
+                    data-user-plan-label="<?= esc($planLabel) ?>"
+                    data-user-plan-hint="<?= esc($planHint) ?>"
+                    data-user-imc-value="<?= esc($imcValue) ?>"
+                    data-user-imc-category="<?= esc($imcCategory) ?>"
+                    data-user-wallet-balance="<?= esc($walletBalance) ?>"
+                    data-user-is-gold="<?= $isGold ? '1' : '0' ?>"
+                    data-user-is-active="<?= $isActive ? '1' : '0' ?>"
+                    data-user-created-at="<?= esc($createdAt) ?>"
+                    data-user-updated-at="<?= esc($updatedAt) ?>"
+                    data-user-last-login="<?= esc($lastLoginRaw) ?>">
+                    Gérer
+                </button>
             </td>
         </tr>
     <?php endforeach; ?>

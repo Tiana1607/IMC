@@ -32,14 +32,12 @@ for ($i = 6; $i >= 0; $i--) {
     $inscriptionData[] = (int) ($weeklyInscriptions[$date] ?? 0);
 }
 
-// Calculate percentage changes from previous period
 $usersChangePercent = 0;
 $subscriptionsChangePercent = 0;
 $revenueChangePercent = 0;
 $goldUsersChangePercent = 0;
 
 if ($db = db_connect()) {
-    // Users added this week vs last week
     $thisWeekUsers = $db->table('users')
         ->where('created_at >=', date('Y-m-d H:i:s', strtotime('-6 days')))
         ->countAllResults();
@@ -51,7 +49,6 @@ if ($db = db_connect()) {
         $usersChangePercent = round((($thisWeekUsers - $lastWeekUsers) / $lastWeekUsers) * 100, 1);
     }
 
-    // Revenue comparison
     $thisWeekRevenue = array_sum($revenueData);
     if ($db->tableExists('user_regimes')) {
         $lastWeekRevenue = $db->table('user_regimes')
@@ -66,7 +63,6 @@ if ($db = db_connect()) {
         }
     }
 
-    // Subscriptions change
     $thisWeekSubs = 0;
     $lastWeekSubs = 0;
     if ($db->tableExists('user_regimes')) {
@@ -84,7 +80,6 @@ if ($db = db_connect()) {
         }
     }
 
-    // Gold users change
     if ($db->tableExists('users')) {
         $thisWeekGoldUsers = $db->table('users')
             ->where('is_gold', 1)
@@ -165,7 +160,43 @@ if (!function_exists('admin_dashboard_time_ago')) {
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/icons/bootstrap-icons.min.css') ?>">
     <link rel="icon" href="<?= base_url('assets/images/heart-pulse-fill.png') ?>" type="image/png">
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/dashboard.css') ?>">
+    <style>
+        .modal-backdrop.show {
+            backdrop-filter: blur(10px);
+            background-color: rgba(15, 23, 42, 0.45);
+        }
 
+        .user-detail-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(0, 110, 47, 0.08);
+            color: #0f5132;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .user-detail-card {
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 1rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.98));
+        }
+
+        .user-detail-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #6b7280;
+            font-weight: 700;
+        }
+
+        .user-detail-value {
+            color: #111827;
+            font-weight: 600;
+        }
+    </style>
 
 </head>
 
@@ -459,6 +490,113 @@ if (!function_exists('admin_dashboard_time_ago')) {
             </div>
         </div>
 
+        <div class="modal fade" id="userDetailsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+                <div class="modal-content border-0 shadow-lg" style="border-radius: 1.35rem; overflow: hidden;">
+                    <div class="modal-header border-0 pb-0 px-4 pt-4">
+                        <div>
+                            <div class="text-uppercase small fw-semibold text-secondary">Fiche utilisateur</div>
+                            <h5 class="modal-title mb-0" id="userDetailsModalTitle">Utilisateur</h5>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    </div>
+
+                    <div class="modal-body px-4 pb-4 pt-3">
+                        <div class="row g-3 align-items-stretch">
+                            <div class="col-12 col-lg-4">
+                                <div class="user-detail-card h-100 p-4">
+                                    <div class="d-flex align-items-center gap-3 mb-4">
+                                        <div id="userDetailsAvatar"
+                                            class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                            style="width: 4rem; height: 4rem; background: rgba(0, 110, 47, 0.12); color: var(--primary-green); font-size: 1.35rem; font-weight: 700;">
+                                            --
+                                        </div>
+                                        <div>
+                                            <div class="user-detail-label">Nom complet</div>
+                                            <div id="userDetailsName" class="user-detail-value fs-5">--</div>
+                                            <div id="userDetailsEmail" class="text-secondary">--</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-wrap gap-2 mb-3">
+                                        <span id="userDetailsStatus" class="user-detail-chip">--</span>
+                                        <span id="userDetailsGold" class="user-detail-chip">--</span>
+                                    </div>
+
+                                    <div class="user-detail-card p-3 mb-3">
+                                        <div class="user-detail-label mb-1">Plan / Objectif</div>
+                                        <div id="userDetailsPlan" class="user-detail-value">--</div>
+                                        <div id="userDetailsPlanHint" class="text-secondary small">--</div>
+                                    </div>
+
+                                    <div class="user-detail-card p-3">
+                                        <div class="user-detail-label mb-1">Dernière connexion</div>
+                                        <div id="userDetailsLastLogin" class="user-detail-value">--</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-8">
+                                <div class="row g-3">
+                                    <div class="col-6 col-md-4">
+                                        <div class="user-detail-card p-3 h-100">
+                                            <div class="user-detail-label">Genre</div>
+                                            <div id="userDetailsGender" class="user-detail-value">--</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="user-detail-card p-3 h-100">
+                                            <div class="user-detail-label">Âge</div>
+                                            <div id="userDetailsAge" class="user-detail-value">--</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="user-detail-card p-3 h-100">
+                                            <div class="user-detail-label">Taille</div>
+                                            <div id="userDetailsHeight" class="user-detail-value">--</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="user-detail-card p-3 h-100">
+                                            <div class="user-detail-label">Poids</div>
+                                            <div id="userDetailsWeight" class="user-detail-value">--</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="user-detail-card p-3 h-100">
+                                            <div class="user-detail-label">IMC</div>
+                                            <div id="userDetailsImc" class="user-detail-value">--</div>
+                                            <div id="userDetailsImcCategory" class="text-secondary small">--</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="user-detail-card p-3 h-100">
+                                            <div class="user-detail-label">Portefeuille</div>
+                                            <div id="userDetailsWallet" class="user-detail-value">--</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="user-detail-card p-3">
+                                            <div class="row g-3">
+                                                <div class="col-12 col-md-6">
+                                                    <div class="user-detail-label">ID utilisateur</div>
+                                                    <div id="userDetailsId" class="user-detail-value">--</div>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <div class="user-detail-label">Objectif enregistré</div>
+                                                    <div id="userDetailsObjective" class="user-detail-value">--</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script src="<?= base_url('assets/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
@@ -468,12 +606,89 @@ if (!function_exists('admin_dashboard_time_ago')) {
             const toolbar = document.getElementById('activityToolbar');
             const tableBody = document.getElementById('activityTableBody');
             const pager = document.getElementById('activityPager');
+            const userModalElement = document.getElementById('userDetailsModal');
+            const userModal = userModalElement ? new bootstrap.Modal(userModalElement) : null;
 
             if (!toolbar || !tableBody || !pager) {
                 return;
             }
 
             const endpoint = toolbar.dataset.endpoint;
+
+            const setModalText = (id, value) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value || '--';
+                }
+            };
+
+            const formatDateTime = (value) => {
+                if (!value) {
+                    return 'Jamais';
+                }
+
+                const normalized = value.replace(' ', 'T');
+                const date = new Date(normalized);
+                if (Number.isNaN(date.getTime())) {
+                    return value;
+                }
+
+                return new Intl.DateTimeFormat('fr-FR', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                }).format(date);
+            };
+
+            const openUserModal = (button) => {
+                if (!userModal) {
+                    return;
+                }
+
+                const name = button.dataset.userName || '--';
+                const email = button.dataset.userEmail || '--';
+                const initials = (name.trim().split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0] || '').join('') || 'NA').toUpperCase();
+                const isActive = button.dataset.userIsActive === '1';
+                const isGold = button.dataset.userIsGold === '1';
+                const planLabel = button.dataset.userPlanLabel || '--';
+                const planHint = button.dataset.userPlanHint || '--';
+                const objectiveLabel = button.dataset.userObjectiveLabel || '--';
+                const genderLabel = button.dataset.userGenderLabel || '--';
+
+                setModalText('userDetailsModalTitle', name);
+                setModalText('userDetailsAvatar', initials);
+                setModalText('userDetailsName', name);
+                setModalText('userDetailsEmail', email);
+                setModalText('userDetailsPlan', planLabel);
+                setModalText('userDetailsPlanHint', planHint);
+                setModalText('userDetailsGender', genderLabel);
+                setModalText('userDetailsAge', button.dataset.userAge ? `${button.dataset.userAge} ans` : '--');
+                setModalText('userDetailsHeight', button.dataset.userHeight ? `${button.dataset.userHeight} cm` : '--');
+                setModalText('userDetailsWeight', button.dataset.userWeight ? `${button.dataset.userWeight} kg` : '--');
+                setModalText('userDetailsImc', button.dataset.userImcValue ? `${button.dataset.userImcValue} kg/m²` : '--');
+                setModalText('userDetailsImcCategory', button.dataset.userImcCategory || '--');
+                setModalText('userDetailsWallet', button.dataset.userWalletBalance ? `${button.dataset.userWalletBalance} €` : '0,00 €');
+                setModalText('userDetailsObjective', objectiveLabel);
+                setModalText('userDetailsId', button.dataset.userId || '--');
+                setModalText('userDetailsCreatedAt', formatDateTime(button.dataset.userCreatedAt || ''));
+                setModalText('userDetailsUpdatedAt', formatDateTime(button.dataset.userUpdatedAt || ''));
+                setModalText('userDetailsLastLogin', formatDateTime(button.dataset.userLastLogin || ''));
+
+                const statusEl = document.getElementById('userDetailsStatus');
+                if (statusEl) {
+                    statusEl.textContent = isActive ? 'Compte actif' : 'Compte inactif';
+                    statusEl.style.background = isActive ? 'rgba(0, 110, 47, 0.10)' : 'rgba(107, 114, 128, 0.10)';
+                    statusEl.style.color = isActive ? '#0f5132' : '#4b5563';
+                }
+
+                const goldEl = document.getElementById('userDetailsGold');
+                if (goldEl) {
+                    goldEl.textContent = isGold ? 'Membre Gold' : 'Non Gold';
+                    goldEl.style.background = isGold ? 'rgba(245, 158, 11, 0.14)' : 'rgba(107, 114, 128, 0.10)';
+                    goldEl.style.color = isGold ? '#92400e' : '#4b5563';
+                }
+
+                userModal.show();
+            };
 
             const loadActivities = (params) => {
                 const url = new URL(endpoint, window.location.origin);
@@ -577,6 +792,16 @@ if (!function_exists('admin_dashboard_time_ago')) {
                     });
                 });
             }
+
+            tableBody.addEventListener('click', (event) => {
+                const trigger = event.target.closest('.js-open-user-modal');
+                if (!trigger) {
+                    return;
+                }
+
+                event.preventDefault();
+                openUserModal(trigger);
+            });
 
             bindPagerActions();
         })();

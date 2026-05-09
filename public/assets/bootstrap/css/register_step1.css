@@ -1,0 +1,238 @@
+        body {
+            background: #f7f9fb;
+        }
+
+        .auth-shell {
+            min-height: 100vh;
+        }
+
+        .auth-topbar {
+            min-height: 72px;
+            background: rgba(255, 255, 255, .88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 0, 0, .06);
+        }
+
+        .brand {
+            color: #006e2f;
+            font-weight: 700;
+            letter-spacing: -.03em;
+            font-size: 1.35rem;
+        }
+
+        .auth-visual {
+            background: linear-gradient(180deg, #eef5ef 0%, #e6ede8 100%);
+            padding-left: 2.5rem;
+        }
+
+        .auth-card {
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .auth-copy h1,
+        .auth-copy h2 {
+            letter-spacing: -.03em;
+        }
+
+        .auth-copy h1 {
+            font-size: clamp(2rem, 3vw, 3rem);
+            line-height: 1.05;
+        }
+
+        .auth-copy h2 {
+            font-size: clamp(1.45rem, 1.6vw, 1.9rem);
+        }
+
+        .auth-copy p,
+        .auth-copy label,
+        .auth-copy .small,
+        .auth-copy .btn,
+        .auth-copy .form-control {
+            font-size: .95rem;
+        }
+
+        .auth-copy .lead {
+            font-size: 1rem;
+            line-height: 1.55;
+        }
+
+        .auth-visual-card {
+            border-radius: 28px;
+            overflow: hidden;
+            width: 100%;
+            max-width: none;
+            height: 100%;
+            display: block;
+        }
+
+        .auth-visual-media {
+            width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-visual-media img {
+            width: 100%;
+            max-width: 760px;
+            height: 420px;
+            object-fit: cover;
+            display: block;
+            border-radius: 18px;
+            margin: 0 auto;
+        }
+
+
+        .auth-connect-link:hover {
+            text-decoration: underline !important;
+            text-underline-offset: 3px;
+        }
+
+        .soft-card {
+            border: 1px solid rgba(0, 0, 0, .06);
+            border-radius: 28px;
+            background: #fff;
+        }
+
+        .section-label {
+            letter-spacing: .18em;
+            font-size: .72rem;
+            font-weight: 700;
+        }
+
+        .form-control,
+        .input-group-text {
+            border-color: #e5e7eb;
+            background: #fff;
+            border-radius: 0.75rem !important;
+        }
+
+        .input-group .form-control,
+        .input-group .input-group-text {
+            border-radius: 0.75rem !important;
+        }
+
+        .form-control:focus {
+            border-color: #006e2f;
+            box-shadow: 0 0 0 .2rem rgba(0, 110, 47, .08);
+        }
+
+        .btn-gender .btn {
+            border-color: #e5e7eb;
+            color: #1f2937;
+            background: #f8fafc;
+        }
+
+        .btn-gender .btn:hover {
+            background: #eef6f0;
+            border-color: #cfe6d6;
+            color: #006e2f;
+        }
+
+        .btn-gender .btn-check:checked+.btn {
+            background: #e6f5ea;
+            border-color: #006e2f;
+            color: #006e2f;
+        }
+
+        /* Email Validation Styles */
+        .email-input {
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.2s ease;
+        }
+
+        .email-input.is-invalid {
+            border-color: #dc2626;
+            background-color: rgba(220, 38, 38, 0.02);
+        }
+
+        .email-input.is-valid {
+            border-color: #16a34a;
+            background-color: rgba(22, 163, 74, 0.02);
+        }
+
+        .email-input:focus.is-invalid {
+            box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.1);
+        }
+
+        .email-input:focus.is-valid {
+            box-shadow: 0 0 0 0.2rem rgba(22, 163, 74, 0.1);
+        }
+
+        /* Email icon feedback */
+        .email-icon-feedback {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            padding-right: 0.75rem;
+            font-size: 1.1rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        .email-icon-feedback.valid {
+            color: #16a34a;
+        }
+
+        .email-icon-feedback.invalid {
+            color: #dc2626;
+        }
+
+        .email-icon-feedback.pending {
+            color: #f59e0b;
+        }
+
+        /* Email status message */
+        #email-feedback,
+        .email-status {
+            display: block !important;
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+            animation: slideIn 0.3s ease;
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+
+        #email-feedback {
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        .email-status {
+            color: #16a34a;
+            font-weight: 500;
+        }
+
+        .email-status.pending {
+            color: #f59e0b;
+            font-style: italic;
+        }
+
+        .email-status.d-none,
+        #email-feedback.d-none {
+            display: none !important;
+        }
+
+        /* Name field validation feedback */
+        .mb-3 .invalid-feedback {
+            display: block !important;
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+            color: #dc2626;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+
+        .mb-3 .invalid-feedback.d-none {
+            display: none !important;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }

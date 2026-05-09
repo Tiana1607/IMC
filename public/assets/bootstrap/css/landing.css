@@ -64,6 +64,9 @@
         }
 
         .login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             border: none;
             background: transparent;
             color: var(--primary);
@@ -82,6 +85,9 @@
         }
 
         .signup-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background: var(--primary);
             border: none;
             color: white;
@@ -151,6 +157,9 @@
         }
 
         .btn-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: var(--primary);
             color: white;
             border: none;
@@ -171,6 +180,9 @@
         }
 
         .btn-alt {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: var(--surface-high);
             border: 1px solid var(--outline);
             color: var(--text);

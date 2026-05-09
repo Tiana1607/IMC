@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/icons/bootstrap-icons.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/bootstrap/css/landing.css') ?>">
+    <link rel="icon" href="<?= base_url('assets/images/heart-pulse-fill.png') ?>" type="image/png">
+
 </head>
 
 <body>
@@ -49,13 +51,13 @@
 
                 <div class="d-flex align-items-center gap-2">
 
-                    <button class="login-btn d-none d-sm-block">
+                    <a href="<?= site_url('auth/login') ?>" class="login-btn d-none d-sm-block text-decoration-none">
                         Connexion
-                    </button>
+                    </a>
 
-                    <button class="signup-btn">
+                    <a href="<?= site_url('auth/register/step1') ?>" class="signup-btn text-decoration-none">
                         Inscription
-                    </button>
+                    </a>
 
                 </div>
 
@@ -90,18 +92,18 @@
             <div
                 class="hero-buttons d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center justify-content-center gap-3">
 
-                <button class="btn-main d-flex align-items-center justify-content-center ">
+                <a href="<?= site_url('auth/register/step1') ?>" class="btn-main d-flex align-items-center justify-content-center text-decoration-none">
 
                     Inscription
 
                     <i class="bi bi-arrow-right ms-2"></i>
 
-                </button>
+                </a>
 
-                <button class="btn-alt">
+                <a href="<?= site_url('auth/login') ?>" class="btn-alt text-decoration-none">
                     Connexion
                     <i class="bi bi-arrow-right ms-2"></i>
-                </button>
+                </a>
 
             </div>
 
@@ -388,13 +390,13 @@
 
             <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
 
-                <button class="btn btn-light rounded-pill px-5 py-3 fw-semibold">
+                <a href="<?= site_url('auth/register/step1') ?>" class="btn btn-light rounded-pill px-5 py-3 fw-semibold text-decoration-none">
                     Commencer
-                </button>
+                </a>
 
-                <button class="btn rounded-pill px-5 py-3 fw-semibold text-white border border-light">
+                <a href="<?= site_url('auth/login') ?>" class="btn rounded-pill px-5 py-3 fw-semibold text-white border border-light text-decoration-none">
                     En savoir plus
-                </button>
+                </a>
 
             </div>
 
@@ -435,9 +437,9 @@
 
                     <ul class="footer-links">
 
-                        <li><a href="#">Suivi IMC</a></li>
-                        <li><a href="#">Régimes</a></li>
-                        <li><a href="#">Activités</a></li>
+                        <li><a href="<?= site_url('auth/login') ?>">Suivi IMC</a></li>
+                        <li><a href="<?= site_url('auth/login') ?>">Régimes</a></li>
+                        <li><a href="<?= site_url('auth/login') ?>">Activités</a></li>
                         <li><a href="#">Application mobile</a></li>
 
                     </ul>

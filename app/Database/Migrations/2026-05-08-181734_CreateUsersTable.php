@@ -56,6 +56,11 @@ class CreateUsersTable extends Migration
                 'constraint' => '5,2',
                 'null' => true,
             ],
+            'imc_category' => [
+                'type' => 'VARCHAR',
+                'constraint' => 20,
+                'null' => true,
+            ],
             'wallet_balance' => [
                 'type' => 'DECIMAL',
                 'constraint' => '10,2',

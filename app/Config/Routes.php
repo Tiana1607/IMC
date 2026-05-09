@@ -2,6 +2,9 @@
 
 use CodeIgniter\Router\RouteCollection;
 
+// const ADMIN_REGIME_ID_ROUTE = 'admin/regimes/(:num)';
+// const ADMIN_ACTIVITY_ID_ROUTE = 'admin/activities/(:num)';
+
 /**
  * @var RouteCollection $routes
  */
@@ -23,3 +26,19 @@ $routes->get('auth/logout', 'Auth::logout');
 
 // Dashboard
 $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
+
+// Admin routes
+$routes->get('admin', 'Admin\\DashboardController::index', ['filter' => 'auth']);
+$routes->post('admin', 'Admin\\DashboardController::index', ['filter' => 'auth']);
+
+$routes->get('admin/regimes', 'Admin\\RegimeController::index', ['filter' => 'auth']);
+$routes->post('admin/regimes', 'Admin\\RegimeController::store', ['filter' => 'auth']);
+$routes->get('admin/regimes/(:num)', 'Admin\\RegimeController::edit/$1', ['filter' => 'auth']);
+$routes->post('admin/regimes/(:num)', 'Admin\\RegimeController::update/$1', ['filter' => 'auth']);
+$routes->delete('admin/regimes/(:num)', 'Admin\\RegimeController::delete/$1', ['filter' => 'auth']);
+
+$routes->get('admin/activities', 'Admin\\ActivityController::index', ['filter' => 'auth']);
+$routes->post('admin/activities', 'Admin\\ActivityController::store', ['filter' => 'auth']);
+$routes->get('admin/activities/(:num)', 'Admin\\ActivityController::edit/$1', ['filter' => 'auth']);
+$routes->post('admin/activities/(:num)', 'Admin\\ActivityController::update/$1', ['filter' => 'auth']);
+$routes->delete('admin/activities/(:num)', 'Admin\\ActivityController::delete/$1', ['filter' => 'auth']);

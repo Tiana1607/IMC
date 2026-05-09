@@ -10,6 +10,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 // Auth routes
+//$routes->get('auth/', 'Auth::index');
 $routes->get('auth/login', 'Auth::login');
 $routes->post('auth/login', 'Auth::login');
 $routes->post('auth/ajax_check_login_email', 'Auth::ajax_check_login_email');
@@ -23,3 +24,8 @@ $routes->get('auth/logout', 'Auth::logout');
 
 // Dashboard
 $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
+
+// Admin
+$routes->get('admin', 'Admin\\DashboardController::index', ['filter' => 'admin']);
+$routes->get('admin/ajax_activities', 'Admin\\DashboardController::ajaxActivities', ['filter' => 'admin']);
+

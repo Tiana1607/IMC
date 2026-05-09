@@ -18,7 +18,7 @@ class Auth extends BaseController
 
 	// public function index()
 	// {
-	// 	return view('/auth/login');
+	// 	return redirect()->to('/auth/login');
 	// }
 
 	public function login()
@@ -62,13 +62,16 @@ class Auth extends BaseController
 			'user_id' => $user['id'],
 			'user_name' => $user['name'],
 			'user_email' => $user['email'],
+			'is_admin' => (int) ($user['is_admin'] ?? 0),
 			'is_logged_in' => true,
 			'auth_remember' => $remember,
 		]);
 
 		$this->userModel->updateLastLogin($user['id']);
 
-		return redirect()->to('/dashboard')
+		$redirectUrl = (int) ($user['is_admin'] ?? 0) === 1 ? '/admin' : '/dashboard';
+
+		return redirect()->to($redirectUrl)
 			->with('success', 'Connexion réussie. Heureux de vous revoir sur VitalPath.');
 	}
 
@@ -217,6 +220,21 @@ class Auth extends BaseController
 
 		// Nettoyer la session et rediriger
 		$this->session->remove('register_step1');
+
+		// Créer la session utilisateur et rediriger
+		if ($newUserId = $this->userModel->getInsertID()) {
+			$newUser = $this->userModel->find($newUserId);
+			if ($newUser) {
+				$this->session->set([
+					'user_id' => $newUser['id'],
+					'user_name' => $newUser['name'],
+					'user_email' => $newUser['email'],
+					'is_admin' => (int) ($newUser['is_admin'] ?? 0),
+					'is_logged_in' => true,
+				]);
+				$this->userModel->updateLastLogin($newUser['id']);
+			}
+		}
 
 		return redirect()->to('/dashboard')
 			->with('success', 'Compte créé avec succès! Bienvenue sur VitalPath');
@@ -374,5 +392,13 @@ class Auth extends BaseController
 			'message' => $valid ? 'Mot de passe correct.' : 'Mot de passe incorrect.',
 			'csrfHash' => csrf_hash(),
 		]);
+	}
+
+
+	public function logout()
+	{
+		$this->session->destroy();
+		return redirect()->to('/')
+			->with('success', 'Déconnexion réussie.');
 	}
 }

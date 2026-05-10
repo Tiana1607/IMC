@@ -12,6 +12,8 @@ DROP TABLE IF EXISTS user_activities;
 
 DROP TABLE IF EXISTS user_regimes;
 
+DROP TABLE IF EXISTS offers;
+
 DROP TABLE IF EXISTS promo_codes;
 
 DROP TABLE IF EXISTS wallets;
@@ -51,7 +53,6 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-
 -- ============================================================================
 -- REGIMES
 -- ============================================================================
@@ -70,7 +71,7 @@ CREATE TABLE regimes (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
+ 
 -- ============================================================================
 -- ACTIVITIES
 -- ============================================================================
@@ -118,6 +119,21 @@ CREATE TABLE promo_codes (
 );
 
 -- ============================================================================
+-- OFFERS
+-- ============================================================================
+CREATE TABLE offers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    label VARCHAR(100),
+    discount_percent INT DEFAULT 0,
+    description TEXT,
+    cta_text VARCHAR(255),
+    is_active TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- ============================================================================
 -- USER REGIMES
 -- ============================================================================
 CREATE TABLE user_regimes (
@@ -126,8 +142,8 @@ CREATE TABLE user_regimes (
     regime_id INT NOT NULL,
     price_paid DECIMAL(20, 2) NOT NULL,
     purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    starts_at TIMESTAMP NOT NULL,
-    ends_at TIMESTAMP NOT NULL,
+    starts_at TIMESTAMP NULL,
+    ends_at TIMESTAMP NULL,
     is_active TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -204,151 +220,70 @@ CREATE INDEX idx_user_regimes_starts_at ON user_regimes(starts_at);
 CREATE INDEX idx_user_regimes_ends_at ON user_regimes(ends_at);
 
 -- ============================================================================
--- DATA PARAMETERS
+-- DATA USERS
 -- ============================================================================
-INSERT INTO
-    parameters (`key`, value, description)
-VALUES
-    ('gold_price', '49.99', 'Prix adhésion Gold'),
-    ('gold_discount_percent', '15', 'Réduction Gold'),
-    ('wallet_min_topup', '5.00', 'Min recharge'),
-    ('app_name', 'IMC & Régimes', 'Nom app'),
-    ('app_version', '1.0.0', 'Version');
+INSERT INTO users (
+    id, email, password_hash, name, gender, height_cm, weight_kg, age, objective,
+    imc_value, imc_category, wallet_balance, is_gold, is_admin, is_active, last_login,
+    created_at, updated_at
+) VALUES
+    (1, 'admin@gmail.com', '$2y$10$qPKSGNHqdvgaktg15LaNzuABodUnWVMXt3K0/kZJLzF5dOPpCIk8O', 'admin', 'M', 158.00, 52.00, 19, 'imc_ideal', 20.83, 'Normal', 0.00, 0, 1, 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (2, 'rova@gmail.com', '$2y$10$Gkuz37RtEd6DTQKLcg/8nusiEm05BDdUSXzGe6MXdHfxA2NUPiBY6', 'rova', 'F', 163.00, 52.00, 19, 'imc_ideal', 19.57, 'Normal', 0.00, 0, 0, 1, '2026-05-09 10:38:23', '2026-05-09 10:38:23', '2026-05-09 10:38:23'),
+    (3, 'jeremie@gmail.com', '$2y$10$vLL56xljlTACEjOjt5kwG.GbZNB4RQJG/4widNGNE1ReTYzspETkW', 'jeremie', 'M', 170.00, 48.00, 23, 'augmenter_poids', 16.61, 'Sous-poids', 0.00, 0, 0, 1, '2026-05-09 15:50:06', '2026-05-09 15:50:06', '2026-05-09 15:50:06');
 
 -- ============================================================================
 -- DATA REGIMES
 -- ============================================================================
-INSERT INTO
-    regimes (
-        name,
-        description,
-        calorie_target,
-        price_per_week,
-        duration_weeks,
-        weight_change_percent,
-        meat_percent,
-        fish_percent,
-        poultry_percent,
-        is_active
-    )
-VALUES
-    (
-        'Régime Léger Cardio',
-        'Perte de poids',
-        1500,
-        12.99,
-        4,
-        -2.5,
-        15,
-        30,
-        35,
-        1
-    ),
-    (
-        'Régime Équilibré',
-        'Maintenance',
-        2000,
-        14.99,
-        4,
-        0,
-        25,
-        20,
-        25,
-        1
-    ),
-    (
-        'Régime Protéiné Muscu',
-        'Prise masse',
-        2800,
-        16.99,
-        4,
-        3,
-        40,
-        25,
-        20,
-        1
-    ),
-    (
-        'Régime Méditerranéen',
-        'Sain',
-        2200,
-        18.99,
-        6,
-        0.5,
-        20,
-        35,
-        15,
-        1
-    ),
-    (
-        'Détox Printanier',
-        'Détox',
-        1800,
-        13.99,
-        3,
-        -1.5,
-        10,
-        15,
-        20,
-        1
-    );
+INSERT INTO regimes (
+    id, name, description, calorie_target, price_per_week, duration_weeks,
+    weight_change_percent, meat_percent, fish_percent, poultry_percent, is_active,
+    created_at, updated_at
+) VALUES
+    (1, 'Régime Léger Cardio', 'Perte de poids', 1500, 12.99, 4, -2.5, 15, 30, 35, 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (2, 'Régime Équilibré', 'Maintenance', 2000, 14.99, 4, 0, 25, 20, 25, 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (3, 'Régime Protéiné Muscu', 'Prise masse', 2800, 16.99, 4, 3, 40, 25, 20, 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (4, 'Régime Méditerranéen', 'Sain', 2200, 18.99, 6, 0.5, 20, 35, 15, 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (5, 'Détox Printanier', 'Détox', 1800, 13.99, 3, -1.5, 10, 15, 20, 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18');
 
 -- ============================================================================
 -- DATA ACTIVITIES
 -- ============================================================================
-INSERT INTO
-    activities (
-        name,
-        description,
-        calories_per_hour,
-        intensity,
-        equipment_needed,
-        difficulty_level,
-        is_active
-    )
-VALUES
-    (
-        'Marche Rapide',
-        'Marche',
-        300,
-        'low',
-        'Chaussures',
-        'beginner',
-        1
-    ),
-    (
-        'Jogging',
-        'Course',
-        600,
-        'medium',
-        'Running shoes',
-        'intermediate',
-        1
-    ),
-    (
-        'Musculation',
-        'Poids',
-        400,
-        'high',
-        'Haltères',
-        'intermediate',
-        1
-    ),
-    (
-        'Yoga',
-        'Relax',
-        150,
-        'low',
-        'Tapis',
-        'beginner',
-        1
-    ),
-    (
-        'Natation',
-        'Piscine',
-        500,
-        'high',
-        'Maillot',
-        'intermediate',
-        1
-    );
+INSERT INTO activities (
+    id, name, description, calories_per_hour, intensity, equipment_needed,
+    difficulty_level, is_active, created_at, updated_at
+) VALUES
+    (1, 'Marche Rapide', 'Marche', 300, 'low', 'Chaussures', 'beginner', 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (2, 'Jogging', 'Course', 600, 'medium', 'Running shoes', 'intermediate', 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (3, 'Musculation', 'Poids', 400, 'high', 'Haltères', 'intermediate', 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (4, 'Yoga', 'Relax', 150, 'low', 'Tapis', 'beginner', 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (5, 'Natation', 'Piscine', 500, 'high', 'Maillot', 'intermediate', 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18');
+
+-- ============================================================================
+-- DATA OFFERS
+-- ============================================================================
+INSERT INTO offers (
+    id, name, label, discount_percent, description, cta_text, is_active, created_at, updated_at
+) VALUES
+    (1, 'Pass Gold', 'Offre limitée', 15, 'Bénéficiez d''une remise exclusive de 15% sur tous les régimes personnalisés.', 'Être un membre Gold', 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18');
+
+-- ============================================================================
+-- DATA PROMO CODES
+-- ============================================================================
+INSERT INTO promo_codes (
+    id, code, amount, is_used, used_by_user_id, used_at, description, expires_at, created_at
+) VALUES
+    (1, 'WELCOME5', 5.00, 0, NULL, NULL, 'Welcome bonus', NULL, '2026-05-10 07:20:18'),
+    (2, 'VITAL-10', 10.00, 0, NULL, NULL, 'Promo 10€', NULL, '2026-05-10 07:20:18'),
+    (3, 'GIFT50', 50.00, 0, NULL, NULL, 'Grand cadeau', NULL, '2026-05-10 07:20:18'),
+    (4, 'USED-TEST', 20.00, 1, 2, '2026-05-09 13:20:18', 'Used by test user', NULL, '2026-05-10 07:20:18');
+
+-- ============================================================================
+-- DATA WALLETS
+-- ============================================================================
+INSERT INTO wallets (
+    id, user_id, balance, created_at, updated_at
+) VALUES
+    (1, 1, 0.00, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (2, 2, 100.00, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (3, 3, 10.00, '2026-05-10 07:20:18', '2026-05-10 07:20:18');
+

@@ -13,7 +13,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 // Auth routes
-//$routes->get('auth/', 'Auth::index');
+$routes->get('auth/', 'Auth::index');
 $routes->get('auth/login', 'Auth::login');
 $routes->post('auth/login', 'Auth::login');
 $routes->post('auth/ajax_check_login_email', 'Auth::ajax_check_login_email');
@@ -27,6 +27,13 @@ $routes->get('auth/logout', 'Auth::logout');
 
 // Dashboard
 $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
+
+// Wallet
+$routes->get('wallet', 'WalletController::index', ['filter' => 'auth']);
+$routes->post('wallet/add-code', 'WalletController::addCode', ['filter' => 'auth']);
+// Admin routes
+// Regime purchase
+$routes->post('regime/(:num)/purchase', 'RegimeController::purchase/$1', ['filter' => 'auth']);
 
 // Admin routes
 $routes->get('admin', 'Admin\\DashboardController::index', ['filter' => 'auth']);

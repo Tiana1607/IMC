@@ -16,10 +16,10 @@ class Auth extends BaseController
 		$this->session = session();
 	}
 
-	// public function index()
-	// {
-	// 	return redirect()->to('/auth/login');
-	// }
+	public function index()
+	{
+		return view('wallet');
+	}
 
 	public function login()
 	{
@@ -398,7 +398,7 @@ class Auth extends BaseController
 	public function logout()
 	{
 		$this->session->destroy();
-		return redirect()->to('/')
+		return redirect()->to('auth/login')
 			->with('success', 'Déconnexion réussie.');
 	}
 }

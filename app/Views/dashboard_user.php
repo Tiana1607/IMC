@@ -141,6 +141,10 @@ $activities = $activities ?? [
                 margin-left: 0;
             }
         }
+
+        .lancer:hover{
+            color: grey;
+        }
     </style>
 </head>
 <body>
@@ -312,7 +316,7 @@ $activities = $activities ?? [
                                                 </div>
                                                 <span class="badge rounded-pill text-bg-light border"><?= esc($activity['time']) ?></span>
                                             </div>
-                                            <button class="btn btn-outline-success btn-sm rounded-pill mt-2 w-100">Lancer l’activité</button>
+                                            <button class="btn btn-outline-success btn-sm rounded-pill mt-2 w-100 lancer">Lancer l’activité</button>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>

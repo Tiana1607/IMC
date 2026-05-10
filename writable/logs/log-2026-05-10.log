@@ -1310,3 +1310,8 @@ DEBUG - 2026-05-10 12:54:55 --> Session: Class initialized using 'CodeIgniter\Se
 14 SYSTEMPATH/Boot.php(166): CodeIgniter\Boot::runCommand()
 15 ROOTPATH/spark(87): CodeIgniter\Boot::bootSpark()
 >>>>>>> rova-wallet
+DEBUG - 2026-05-10 13:41:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-10 13:41:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-10 13:42:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-10 13:42:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-05-10 13:42:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

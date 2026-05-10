@@ -500,6 +500,97 @@
             color: #b45309;
         }
 
+/* Design refinements: improve spacing, controls, table and buttons for a cleaner Bootstrap-alike look */
+:root {
+    --radius-xl: 1.5rem;
+}
+
+/* Panels */
+.panel {
+    border-radius: var(--radius-xl);
+    padding: 1.25rem;
+}
+
+/* Form controls */
+.form-control.soft-input,
+.form-select.soft-input {
+    border-radius: 0.8rem;
+    padding: 0.75rem 0.9rem;
+    box-shadow: none;
+}
+
+.form-control.soft-input:focus,
+.form-select.soft-input:focus {
+    box-shadow: 0 6px 20px rgba(13, 124, 58, 0.06);
+}
+
+/* Buttons */
+.btn-success {
+    background: linear-gradient(180deg, var(--primary-green), var(--primary-green-2));
+    border: none;
+    box-shadow: 0 8px 22px rgba(13, 124, 58, 0.14);
+}
+
+.btn-outline-success {
+    border-color: rgba(13,124,58,0.12);
+    color: var(--primary-green);
+}
+.btn-outline-success:hover {
+    background: rgba(13,124,58,0.06);
+    border-color: rgba(13,124,58,0.18);
+}
+
+.btn-outline-danger {
+    border-color: rgba(192, 57, 43, 0.12);
+    color: #c0392b;
+}
+.btn-outline-danger:hover {
+    background: rgba(192, 57, 43, 0.04);
+}
+
+/* Tables */
+.table thead th {
+    background: rgba(255,255,255,0.6);
+    border-bottom: none;
+    color: var(--muted);
+    font-weight: 700;
+}
+.table tbody td {
+    vertical-align: middle;
+    padding: 0.9rem 1rem;
+}
+.table-hover tbody tr:hover {
+    background: rgba(13,124,58,0.03);
+}
+
+/* Composition bars */
+.comp-bar { height: .6rem; border-radius: .6rem; }
+.comp-bar > span { box-shadow: inset 0 1px 0 rgba(255,255,255,0.6); }
+
+/* Metric cards */
+.metric-card { padding: 1.35rem; border-radius: 1.25rem; }
+.metric-card.small { padding: 1rem; }
+
+/* List group items */
+.list-group-item { padding: 0.9rem 1rem; border-radius: .75rem; }
+
+/* Make small helper elements more consistent */
+.small.text-muted { color: var(--muted) !important; }
+
+/* Slightly reduce overall page density for a more airy feel */
+main.container { max-width: 1200px; }
+
+/* Ensure badges and chips have rounded, subtle style */
+.badge {
+    border-radius: 999px;
+    padding: .35rem .6rem;
+}
+
+/* Improve mobile spacing for the admin topbar */
+@media (max-width: 767.98px) {
+    .admin-topbar { padding: .65rem 1rem; }
+}
+
         .gold-spotlight-footer-card strong {
             display: block;
             font-size: 0.9rem;
@@ -697,6 +788,237 @@
         #activityToolbar .btn-success {
             color: #fff;
         }
+
+/* Regime & Activity redesign */
+.admin-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.admin-page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2.25rem;
+}
+
+.admin-page-header-copy {
+    max-width: 44rem;
+}
+
+.admin-page-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--primary-green);
+    font-weight: 700;
+}
+
+.admin-page-kicker::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--primary-green), var(--primary-green-2));
+}
+
+.admin-page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0.4rem 0 0.6rem;
+}
+
+.admin-page-subtitle {
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.admin-page-header-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: rgba(0, 110, 47, 0.08);
+    color: var(--primary-green);
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.admin-card-header {
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(0, 110, 47, 0.08), rgba(59, 130, 246, 0.04));
+}
+
+.admin-card-header-compact {
+    background: linear-gradient(135deg, rgba(0, 110, 47, 0.12), rgba(255, 255, 255, 0.85));
+}
+
+.admin-card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.admin-card-subtitle {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.admin-card-body {
+    padding: 1.5rem 1.75rem 1.75rem;
+}
+
+.admin-card-footer {
+    margin-top: 1.5rem;
+}
+
+.admin-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 110, 47, 0.12);
+    color: var(--primary-green);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.admin-text-muted {
+    color: var(--muted);
+}
+
+.admin-table thead {
+    background: rgba(0, 110, 47, 0.05);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+}
+
+.admin-table tbody tr.is-active {
+    background: rgba(0, 110, 47, 0.08);
+}
+
+.admin-avatar-pill {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.9rem;
+    background: rgba(0, 110, 47, 0.12);
+    color: var(--primary-green);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.admin-composition {
+    min-width: 10rem;
+    display: grid;
+    gap: 0.3rem;
+}
+
+.admin-list {
+    background: transparent;
+}
+
+.admin-list-item {
+    border-color: rgba(15, 23, 42, 0.08);
+    padding: 1.1rem 1.35rem;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.admin-list-item.is-active {
+    background: rgba(0, 110, 47, 0.08);
+}
+
+.admin-badge {
+    background: rgba(0, 110, 47, 0.14);
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+.admin-action {
+    border-radius: 999px;
+}
+
+.admin-section {
+    background: rgba(0, 110, 47, 0.06);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.admin-section-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--primary-green);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.admin-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.25rem;
+}
+
+.soft-input {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 0.85rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.soft-input:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 0.2rem rgba(0, 110, 47, 0.14);
+}
+
+@media (max-width: 991px) {
+    .admin-page {
+        padding: 2rem 1.25rem 2.5rem;
+    }
+
+    .admin-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-page-header-chip {
+        align-self: flex-start;
+    }
+}
 
         @media (max-width: 768px) {
             .admin-topbar {

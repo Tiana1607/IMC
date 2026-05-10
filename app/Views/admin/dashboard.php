@@ -25,6 +25,10 @@ $revenueData = [];
 $inscriptionData = [];
 $dayLabels = [];
 
+const ADMIN_DASHBOARD_ROUTE = '/admin';
+const ADMIN_REGIMES_ROUTE = '/admin/regimes';
+const ADMIN_ACTIVITIES_ROUTE = '/admin/activities';
+
 for ($i = 6; $i >= 0; $i--) {
     $date = date('Y-m-d', strtotime("-$i days"));
     $dayLabels[] = date('D', strtotime($date));
@@ -213,8 +217,8 @@ if (!function_exists('admin_dashboard_time_ago')) {
 
                 <nav class="admin-nav d-none d-md-flex gap-2">
                     <a href="<?= site_url("admin") ?>">Dashboard</a>
-                    <a href="#">Régimes</a>
-                    <a href="#">Activités</a>
+                    <a href="<?= site_url("/admin/regimes") ?>">Régimes</a>
+                    <a href="<?= site_url("/admin/activities") ?>">Activités</a>
                 </nav>
 
                 <div class="d-flex align-items-center gap-2 gap-md-3 admin-topbar-actions">

@@ -105,6 +105,26 @@ $intensityStyles = [
                 </div>
 
                 <div class="admin-card-body">
+                    <?php if (session('success')): ?>
+                        <div class="alert alert-success" role="alert">
+                            <?= esc(session('success')) ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (session('error')): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?= esc(session('error')) ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (session('errors')): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <ul class="mb-0">
+                                <?php foreach ((array) session('errors') as $message): ?>
+                                    <li><?= esc($message) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
                     <form method="post" action="<?= htmlspecialchars($currentActivity ? $adminActivityIdPrefix . $currentActivity['id'] : $adminActivityRoute, ENT_QUOTES, 'UTF-8') ?>">
                         <?= csrf_field() ?>
 

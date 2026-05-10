@@ -8,9 +8,9 @@ class RegimeObjective extends Model
 {
     protected $table = 'regime_objectives';
     protected $allowedFields = ['regime_id', 'objective'];
-    protected $primaryKey = ['regime_id', 'objective'];
+    protected $primaryKey = 'regime_id';
     protected $useAutoIncrement = false;
-    protected $timestamps = false;
+    protected $useTimestamps = false;
 
     /**
      * Get all objectives for a regime

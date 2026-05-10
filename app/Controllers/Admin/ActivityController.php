@@ -25,15 +25,14 @@ class ActivityController extends BaseController
 
         return view('admin/activity/index', [
             'activities' => $activityModel->orderBy('name', 'ASC')->findAll(),
+            'activity' => null,
+            'objectives' => [],
         ]);
     }
 
     public function create()
     {
-        return view('admin/activity/form', [
-            'activity' => null,
-            'objectives' => [],
-        ]);
+        return redirect()->to(self::INDEX_ROUTE);
     }
 
     public function store()
@@ -46,14 +45,22 @@ class ActivityController extends BaseController
         $activityModel = new Activity();
         $activity = $activityModel->find($id);
         $response = redirect()->to(self::INDEX_ROUTE);
+        $db = db_connect();
 
         if ($activity === null) {
             $response = $response->with('error', self::MSG_NOT_FOUND);
         } else {
             $objectiveModel = new ActivityObjective();
-            $response = view('admin/activity/form', [
+            $objectives = [];
+
+            if ($db->tableExists('activity_objectives')) {
+                $objectives = array_column($objectiveModel->getObjectivesByActivity($id), 'objective');
+            }
+
+            $response = view('admin/activity/index', [
+                'activities' => $activityModel->orderBy('name', 'ASC')->findAll(),
                 'activity' => $activity,
-                'objectives' => array_column($objectiveModel->getObjectivesByActivity($id), 'objective'),
+                'objectives' => $objectives,
             ]);
         }
 
@@ -177,6 +184,12 @@ class ActivityController extends BaseController
 
     private function syncObjectives(int $activityId): void
     {
+        $db = db_connect();
+
+        if (! $db->tableExists('activity_objectives')) {
+            return;
+        }
+
         $objectiveModel = new ActivityObjective();
         $objectives = $this->extractObjectives();
 

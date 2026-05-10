@@ -19,7 +19,7 @@ class RegimeController extends BaseController
     private const MSG_DELETE_ERROR = 'Impossible de supprimer le régime.';
     private const MSG_PERCENTAGE_ERROR = 'La somme des pourcentages viande, poisson et volaille doit être égale à 100%.';
     private const RULE_PRICE = 'required|decimal|greater_than[0]';
-    private const RULE_PERCENT = 'required|decimal|greater_than_or_equal_to[0]';
+    private const RULE_PERCENT = 'required|decimal|greater_than_equal_to[0]';
     private const ALLOWED_OBJECTIVES = ['loss', 'gain', 'ideal'];
 
     public function index()
@@ -28,15 +28,14 @@ class RegimeController extends BaseController
 
         return view('admin/regime/index', [
             'regimes' => $regimeModel->orderBy('name', 'ASC')->findAll(),
+            'regime' => null,
+            'objectives' => [],
         ]);
     }
 
     public function create()
     {
-        return view('admin/regime/form', [
-            'regime' => null,
-            'objectives' => [],
-        ]);
+        return redirect()->to(self::INDEX_ROUTE);
     }
 
     public function store()
@@ -49,14 +48,22 @@ class RegimeController extends BaseController
         $regimeModel = new Regime();
         $regime = $regimeModel->find($id);
         $response = redirect()->to(self::INDEX_ROUTE);
+        $db = db_connect();
 
         if ($regime === null) {
             $response = $response->with('error', self::MSG_NOT_FOUND);
         } else {
             $objectiveModel = new RegimeObjective();
-            $response = view('admin/regime/form', [
+            $objectives = [];
+
+            if ($db->tableExists('regime_objectives')) {
+                $objectives = array_column($objectiveModel->getObjectivesByRegime($id), 'objective');
+            }
+
+            $response = view('admin/regime/index', [
+                'regimes' => $regimeModel->orderBy('name', 'ASC')->findAll(),
                 'regime' => $regime,
-                'objectives' => array_column($objectiveModel->getObjectivesByRegime($id), 'objective'),
+                'objectives' => $objectives,
             ]);
         }
 
@@ -208,6 +215,12 @@ class RegimeController extends BaseController
 
     private function syncObjectives(int $regimeId): void
     {
+        $db = db_connect();
+
+        if (! $db->tableExists('regime_objectives')) {
+            return;
+        }
+
         $objectiveModel = new RegimeObjective();
         $objectives = $this->extractObjectives();
 

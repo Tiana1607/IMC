@@ -8,9 +8,9 @@ class ActivityObjective extends Model
 {
     protected $table = 'activity_objectives';
     protected $allowedFields = ['activity_id', 'objective'];
-    protected $primaryKey = ['activity_id', 'objective'];
+    protected $primaryKey = 'activity_id';
     protected $useAutoIncrement = false;
-    protected $timestamps = false;
+    protected $useTimestamps = false;
 
     /**
      * Get all objectives for an activity

@@ -17,6 +17,39 @@ class RegimeController extends BaseController
     }
 
     /**
+     * Display available regimes for purchase
+     * GET /regimes
+     */
+    public function catalog()
+    {
+        $userId = (int) ($this->session->get('user_id') ?? 0);
+        if ($userId === 0) {
+            return redirect()->to('/auth/login');
+        }
+
+        $regimeModel = new Regime();
+        $userRegimeModel = new UserRegime();
+
+        $regimes = $regimeModel->where('is_active', 1)->findAll();
+        $purchases = $userRegimeModel->getUserPurchases($userId);
+
+        $purchasedRegimeIds = [];
+        foreach ($purchases as $purchase) {
+            $purchasedRegimeIds[] = (int) ($purchase['regime_id'] ?? 0);
+        }
+
+        $db = db_connect();
+        $user = $db->table('users')->where('id', $userId)->get()->getRowArray();
+
+        return view('regimes/catalog', [
+            'regimes' => $regimes,
+            'purchasedRegimeIds' => $purchasedRegimeIds,
+            'isGold' => (int) ($user['is_gold'] ?? 0) === 1,
+            'walletBalance' => (new Wallet())->getBalance($userId),
+        ]);
+    }
+
+    /**
      * Purchase a regime
      * POST /regime/:id/purchase
      */

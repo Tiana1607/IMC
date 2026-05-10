@@ -26,13 +26,15 @@ $routes->post('auth/register/step2', 'Auth::register_step2');
 $routes->get('auth/logout', 'Auth::logout');
 
 // Dashboard
-$routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
+$routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
 
 // Wallet
 $routes->get('wallet', 'WalletController::index', ['filter' => 'auth']);
 $routes->post('wallet/add-code', 'WalletController::addCode', ['filter' => 'auth']);
+$routes->post('upgrade-gold', 'WalletController::upgradeGold', ['filter' => 'auth']);
 // Admin routes
 // Regime purchase
+$routes->get('regimes', 'RegimeController::catalog', ['filter' => 'auth']);
 $routes->post('regime/(:num)/purchase', 'RegimeController::purchase/$1', ['filter' => 'auth']);
 
 // Admin routes

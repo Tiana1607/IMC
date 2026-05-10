@@ -272,9 +272,9 @@
                             </div>
 
                             <p class="text-center small text-secondary">
-                                En cliquant terminer, tu acceptes nos <a href="#"
+                                En cliquant terminer, tu acceptes nos <a href="<?= site_url('/') ?>"
                                     class="text-success text-decoration-none">conditions d'utilisation</a>
-                                et notre <a href="#" class="text-success text-decoration-none">politique de
+                                et notre <a href="<?= site_url('/') ?>" class="text-success text-decoration-none">politique de
                                     confidentialité</a>.
                             </p>
                         </form>

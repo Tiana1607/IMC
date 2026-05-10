@@ -25,8 +25,8 @@
                     </div>
 
                     <nav class="admin-nav d-none d-md-flex gap-2">
-                        <a href="<?= site_url() ?>">Tableau de bord</a>
-                        <a href="#">Régimes</a>
+                        <a href="#">Tableau de bord</a>
+                        <a href="<?= site_url('regimes') ?>">Régimes</a>
                         <a href="#">Activités</a>
                     </nav>
 
@@ -46,7 +46,7 @@
                 <div class="collapse admin-mobile-nav d-md-none mt-3" id="adminMobileNav">
                     <div class="d-flex flex-wrap gap-2">
                         <a class="btn btn-sm btn-outline-secondary" href="#">Tableau de bord</a>
-                        <a class="btn btn-sm btn-outline-secondary" href="#">Régimes</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('regimes') ?>">Régimes</a>
                         <a class="btn btn-sm btn-outline-secondary" href="#">Activités</a>
                         <a class="btn btn-sm btn-outline-secondary" href="#">Portefeuille</a>
                         <a class="btn btn-sm btn-outline-secondary"
@@ -108,8 +108,14 @@
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <span class="wallet-plan-name"><?= esc($currentPlan ?? 'Standard') ?></span>
                         </div>
-                        <button type="button" class="btn btn-success w-100 rounded-pill fw-semibold"
-                            data-bs-toggle="modal" data-bs-target="#promoModal">Upgrade</button>
+                        <?php if (!empty($isGold)): ?>
+                            <button type="button" class="btn btn-success w-100 rounded-pill fw-semibold" disabled>Membre Gold actif</button>
+                        <?php else: ?>
+                            <form method="post" action="<?= site_url('upgrade-gold') ?>">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn btn-success w-100 rounded-pill fw-semibold">Devenir Gold</button>
+                            </form>
+                        <?php endif; ?>
                     </div>
                 </div>
             </aside>
@@ -156,8 +162,14 @@
                                         <div class="wallet-offer-percent"><?= (int) ($offer['discount_percent'] ?? 15) ?>%<br>OFF</div>
                                         <div class="text-white-50 pb-1">sur chaque achat</div>
                                     </div>
-                                    <button type="button" class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3"
-                                        data-bs-toggle="modal" data-bs-target="#promoModal"><?= esc($offer['cta_text'] ?? 'Être un membre Gold') ?></button>
+                                    <?php if (!empty($isGold)): ?>
+                                        <button type="button" class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3" disabled>Membre Gold actif</button>
+                                    <?php else: ?>
+                                        <form method="post" action="<?= site_url('upgrade-gold') ?>">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3"><?= esc($offer['cta_text'] ?? 'Être un membre Gold') ?> </button>
+                                        </form>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

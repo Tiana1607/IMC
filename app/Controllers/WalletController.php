@@ -9,6 +9,7 @@ use App\Models\PromoCode;
 class WalletController extends BaseController
 {
     protected $session;
+    private const GOLD_PRICE = 49.0;
 
     public function __construct()
     {
@@ -32,6 +33,7 @@ class WalletController extends BaseController
             ->findAll();
 
         $db = db_connect();
+        $user = $db->table('users')->where('id', $userId)->get()->getRowArray();
         $purchases = [];
         if ($db->tableExists('user_regimes')) {
             $purchases = $db->table('user_regimes ur')
@@ -126,6 +128,7 @@ class WalletController extends BaseController
             'offer' => $offer,
             'promoCardTitle' => $promoCardTitle,
             'promoCardDescription' => $promoCardDescription,
+            'isGold' => (int) ($user['is_gold'] ?? 0) === 1,
         ]);
     }
 
@@ -169,6 +172,50 @@ class WalletController extends BaseController
 
         $this->session->setFlashdata('success', 'Code appliqué — ' . number_format($amount, 2) . ' ajouté au portefeuille.');
 
+        return redirect()->back();
+    }
+
+    public function upgradeGold()
+    {
+        if (! $this->request->is('post')) {
+            return redirect()->back();
+        }
+
+        $userId = (int) ($this->session->get('user_id') ?? 0);
+        if ($userId === 0) {
+            return redirect()->to('/auth/login');
+        }
+
+        $db = db_connect();
+        $user = $db->table('users')->where('id', $userId)->get()->getRowArray();
+        if (! $user) {
+            $this->session->setFlashdata('error', 'Utilisateur non trouvé.');
+            return redirect()->back();
+        }
+
+        if ((int) ($user['is_gold'] ?? 0) === 1) {
+            $this->session->setFlashdata('success', 'Vous êtes déjà membre Gold.');
+            return redirect()->back();
+        }
+
+        $walletModel = new Wallet();
+        $balance = $walletModel->getBalance($userId);
+
+        if ($balance < self::GOLD_PRICE) {
+            $missing = self::GOLD_PRICE - $balance;
+            $this->session->setFlashdata('error', 'Solde insuffisant pour Gold. Il manque €' . number_format($missing, 2) . '.');
+            return redirect()->back();
+        }
+
+        if (! $walletModel->subtractBalance($userId, self::GOLD_PRICE)) {
+            $this->session->setFlashdata('error', 'Impossible de débiter le portefeuille pour Gold.');
+            return redirect()->back();
+        }
+
+        $db->table('users')->where('id', $userId)->update(['is_gold' => 1]);
+        $this->session->set('is_gold', 1);
+
+        $this->session->setFlashdata('success', 'Félicitations, vous êtes maintenant membre Gold (-15% sur les régimes).');
         return redirect()->back();
     }
 }

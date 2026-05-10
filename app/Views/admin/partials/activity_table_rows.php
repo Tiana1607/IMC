@@ -138,7 +138,7 @@ if (!function_exists('admin_dashboard_time_ago')) {
                     data-user-created-at="<?= esc($createdAt) ?>"
                     data-user-updated-at="<?= esc($updatedAt) ?>"
                     data-user-last-login="<?= esc($lastLoginRaw) ?>">
-                    Gérer
+                    Détails
                 </button>
             </td>
         </tr>

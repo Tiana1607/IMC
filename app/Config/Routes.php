@@ -28,6 +28,11 @@ $routes->get('auth/logout', 'Auth::logout');
 // Dashboard
 $routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
 
+// Profile
+$routes->get('profile/view', 'ProfileController::view', ['filter' => 'auth']);
+$routes->get('profile/edit', 'ProfileController::edit', ['filter' => 'auth']);
+$routes->post('profile/update', 'ProfileController::update', ['filter' => 'auth']);
+
 // Wallet
 $routes->get('wallet', 'WalletController::index', ['filter' => 'auth']);
 $routes->post('wallet/add-code', 'WalletController::addCode', ['filter' => 'auth']);

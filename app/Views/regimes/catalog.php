@@ -111,6 +111,30 @@
 
                             <p class="text-secondary small mb-3"><?= esc($regime['description'] ?? 'Description non disponible.') ?></p>
 
+                            <!-- Composition Nutritionnelle -->
+                            <div class="regime-composition mb-3 p-2 bg-light rounded">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <?php if ((int) ($regime['meat_percent'] ?? 0) > 0): ?>
+                                        <span class="small d-flex align-items-center gap-1">
+                                            <i class="bi bi-egg-fried" style="color: #8B4513;"></i>
+                                            <span><?= (int) ($regime['meat_percent'] ?? 0) ?>% Viande</span>
+                                        </span>
+                                    <?php endif; ?>
+                                    <?php if ((int) ($regime['fish_percent'] ?? 0) > 0): ?>
+                                        <span class="small d-flex align-items-center gap-1">
+                                            <i class="bi bi-fish" style="color: #4169E1;"></i>
+                                            <span><?= (int) ($regime['fish_percent'] ?? 0) ?>% Poisson</span>
+                                        </span>
+                                    <?php endif; ?>
+                                    <?php if ((int) ($regime['poultry_percent'] ?? 0) > 0): ?>
+                                        <span class="small d-flex align-items-center gap-1">
+                                            <i class="bi bi-egg" style="color: #FFD700;"></i>
+                                            <span><?= (int) ($regime['poultry_percent'] ?? 0) ?>% Volaille</span>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
                             <div class="mb-2">
                                 <span class="regime-price">€<?= number_format($finalPrice, 2) ?></span>
                                 <?php if ((bool) ($isGold ?? false)): ?>

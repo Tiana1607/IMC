@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\ImmediateCalculationHelper;
 use App\Models\User;
 
 class Auth extends BaseController
@@ -192,8 +193,9 @@ class Auth extends BaseController
 			'imc_ideal' => 'imc_ideal',
 		];
 
-		$imc = $this->userModel->calculateIMC($weight_kg, $height_cm);
-		$imcCategory = $this->userModel->getIMCCategory($imc);
+		// Utiliser le Helper pour calculer IMC
+		$imc = ImmediateCalculationHelper::calculateIMC($weight_kg, $height_cm);
+		$imcCategory = ImmediateCalculationHelper::getIMCCategory($imc);
 
 		$userData = [
 			'name' => $full_name,

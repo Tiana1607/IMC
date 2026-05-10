@@ -141,10 +141,6 @@ $activities = $activities ?? [
                 margin-left: 0;
             }
         }
-
-        .lancer:hover{
-            color: grey;
-        }
     </style>
 </head>
 <body>
@@ -157,9 +153,9 @@ $activities = $activities ?? [
                 </div>
 
                 <nav class="admin-nav d-none d-md-flex gap-2">
-                    <a class="<?= $navActive('dashboard') ?>" href="<?= site_url() ?>">Tableau de bord</a>
+                    <a class="<?= $navActive('dashboard') ?>" href="<?= site_url('/dashboard') ?>">Tableau de bord</a>
                     <a class="<?= $navActive('regimes') ?>" href="<?= site_url('regimes') ?>">Régimes</a>
-                    <a class="<?= $navActive('activity') ?>" href="#">Activités</a>
+                    <!-- Activités (À venir) -->
                 </nav>
 
                 <div class="d-flex align-items-center gap-2 gap-md-3 admin-topbar-actions">
@@ -179,7 +175,6 @@ $activities = $activities ?? [
                 <div class="d-flex flex-wrap gap-2">
                     <a href="<?= site_url() ?>" class="btn btn-sm btn-outline-secondary">Tableau de bord</a>
                     <a href="<?= site_url('regimes') ?>" class="btn btn-sm btn-outline-secondary">Régimes</a>
-                    <a href="#" class="btn btn-sm btn-outline-secondary">Activités</a>
                     <a href="<?= site_url('wallet') ?>" class="btn btn-sm btn-outline-secondary">Portefeuille</a>
                     <a href="<?= site_url('auth/logout') ?>" class="btn btn-sm btn-outline-secondary">Déconnexion</a>
                 </div>
@@ -195,17 +190,13 @@ $activities = $activities ?? [
                         <i class="bi bi-speedometer2"></i>
                         <span>Tableau de bord</span>
                     </a>
-                    <!-- <a class="wallet-sidebar-link <?= $navActive('diet') ?>" href="#">
-                        <i class="bi bi-basket"></i>
-                        <span>Régimes</span>
-                    </a>
-                    <a class="wallet-sidebar-link <?= $navActive('activity') ?>" href="#">
-                        <i class="bi bi-heart-pulse"></i>
-                        <span>Activités</span>
-                    </a> -->
                     <a class="wallet-sidebar-link <?= $navActive('wallet') ?>" href="<?= site_url('wallet') ?>">
                         <i class="bi bi-wallet2"></i>
                         <span>Portefeuille</span>
+                    </a>
+                    <a class="wallet-sidebar-link <?= $navActive('profile') ?>" href="<?= site_url('profile/view') ?>">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Mon profil</span>
                     </a>
                     <a class="wallet-sidebar-link" href="<?= site_url('auth/logout') ?>">
                         <i class="bi bi-box-arrow-right"></i>
@@ -262,7 +253,7 @@ $activities = $activities ?? [
                         <div class="card-section h-100">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h2 class="section-title m-0">Régimes recommandés</h2>
-                                <a href="#" class="wallet-view-all">Voir tout</a>
+                                <a href="<?= site_url('wallet') ?>" class="wallet-view-all">Voir tout</a>
                             </div>
                             <div class="row g-3">
                                 <div class="col-12">
@@ -273,7 +264,7 @@ $activities = $activities ?? [
                                             <span class="user-dashboard-pill mb-2"><?= esc($diets[0]['badge']) ?></span>
                                             <h3 class="mb-2" style="font-size: clamp(1.2rem, 2vw, 1.75rem); font-weight: 700;"> <?= esc($diets[0]['title']) ?></h3>
                                             <p class="mb-3 text-white-75" style="max-width: 46rem;"><?= esc($diets[0]['description']) ?></p>
-                                            <button class="btn btn-light rounded-pill fw-semibold">Démarrer le plan</button>
+                                            <a href="<?= site_url('regimes') ?>" class="btn btn-light rounded-pill fw-semibold">Découvrir ce régime</a>
                                         </div>
                                     </div>
                                 </div>
@@ -316,7 +307,7 @@ $activities = $activities ?? [
                                                 </div>
                                                 <span class="badge rounded-pill text-bg-light border"><?= esc($activity['time']) ?></span>
                                             </div>
-                                            <button class="btn btn-outline-success btn-sm rounded-pill mt-2 w-100 lancer">Lancer l’activité</button>
+
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -326,6 +317,19 @@ $activities = $activities ?? [
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Recommandations Vue (Régimes + Activités) -->
+    <div class="recommendations-wrapper" style="background-color: #f8f9fa; padding: 2rem 1rem;">
+        <div class="container-fluid px-0" style="max-width: 1180px; margin: 0 auto;">
+            <?= view('recommendations', [
+                'diets' => $diets ?? [],
+                'activities' => $activities ?? [],
+                'imc' => $imc ?? null,
+                'imcCategory' => $imcCategory ?? null,
+                'objectiveLabel' => $objectiveLabel ?? 'Non défini',
+            ]) ?>
+        </div>
     </div>
 
     <nav class="navbar fixed-bottom d-md-none user-dashboard-bottom-nav px-3 py-2" style="font-size: 0.75rem">

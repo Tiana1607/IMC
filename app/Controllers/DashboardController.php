@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\ImmediateCalculationHelper;
 use App\Models\Activity;
 use App\Models\Regime;
 use App\Models\User;
@@ -49,8 +50,12 @@ class DashboardController extends BaseController
         $objective = (string) ($user['objective'] ?? 'imc_ideal');
         $objectiveLabel = $objectiveLabels[$objective] ?? ucfirst(str_replace('_', ' ', $objective));
 
-        $imc = $user['imc_value'] ?? $this->userModel->calculateIMC((float) ($user['weight_kg'] ?? 0), (float) ($user['height_cm'] ?? 0));
-        $imcCategory = $user['imc_category'] ?? $this->userModel->getIMCCategory($imc);
+        // Utiliser le Helper pour les calculs IMC
+        $imc = $user['imc_value'] ?? ImmediateCalculationHelper::calculateIMC(
+            (float) ($user['weight_kg'] ?? 0),
+            (float) ($user['height_cm'] ?? 0)
+        );
+        $imcCategory = $user['imc_category'] ?? ImmediateCalculationHelper::getIMCCategory($imc);
         $walletBalance = $this->walletModel->getBalance($userId);
 
         $currentPlan = 'Standard';
@@ -70,42 +75,23 @@ class DashboardController extends BaseController
             $recommendedRegimes = $this->regimeModel->getActiveRegimes();
         }
 
-        if ($imc !== null) {
-            usort($recommendedRegimes, function (array $a, array $b) use ($objective, $imc): int {
-                $calA = (int) ($a['calorie_target'] ?? 0);
-                $calB = (int) ($b['calorie_target'] ?? 0);
-
-                if ($objective === 'reduire_poids' || $imc >= 25) {
-                    return $calA <=> $calB;
-                }
-
-                if ($objective === 'augmenter_poids' && $imc < 25) {
-                    return $calB <=> $calA;
-                }
-
-                return abs($calA - 2200) <=> abs($calB - 2200);
-            });
-        }
+        // Appliquer la logique de recommandation intelligente
+        $preferences = ImmediateCalculationHelper::getRecommendationPreferences($objective, $imc);
+        $recommendedRegimes = ImmediateCalculationHelper::sortRegimesByPreference(
+            $recommendedRegimes,
+            $preferences['regime_preference']
+        );
 
         $recommendedActivities = $this->activityModel->getByObjective($objective);
         if (empty($recommendedActivities)) {
             $recommendedActivities = $this->activityModel->getActiveActivities();
         }
 
-        usort($recommendedActivities, function (array $a, array $b) use ($objective, $imc): int {
-            $kcalA = (int) ($a['calories_per_hour'] ?? 0);
-            $kcalB = (int) ($b['calories_per_hour'] ?? 0);
-
-            if ($objective === 'reduire_poids' || ($imc !== null && $imc >= 25)) {
-                return $kcalB <=> $kcalA;
-            }
-
-            if ($objective === 'augmenter_poids') {
-                return $kcalA <=> $kcalB;
-            }
-
-            return abs($kcalA - 250) <=> abs($kcalB - 250);
-        });
+        // Appliquer les préférences aux activités
+        $recommendedActivities = ImmediateCalculationHelper::sortActivitiesByPreference(
+            $recommendedActivities,
+            $preferences['activity_preference']
+        );
 
         $dietImages = [
             base_url('assets/images/image2.png'),
@@ -147,19 +133,31 @@ class DashboardController extends BaseController
         $diets = [];
         foreach (array_slice($recommendedRegimes, 0, 3) as $index => $regime) {
             $diets[] = [
+                'id' => $regime['id'] ?? null,
                 'title' => $regime['name'] ?? 'Régime',
                 'description' => $regime['description'] ?? 'Programme nutritionnel disponible.',
                 'badge' => $index === 0 ? 'Meilleur choix' : 'Recommandé',
                 'image' => $dietImages[$index] ?? $dietImages[0],
+                'calorie_target' => $regime['calorie_target'] ?? null,
+                'price_per_week' => $regime['price_per_week'] ?? null,
+                'meat_percent' => $regime['meat_percent'] ?? 0,
+                'fish_percent' => $regime['fish_percent'] ?? 0,
+                'poultry_percent' => $regime['poultry_percent'] ?? 0,
             ];
         }
 
         if (empty($diets)) {
             $diets[] = [
+                'id' => null,
                 'title' => 'Régime équilibré',
                 'description' => 'Aucune recommandation précise pour le moment.',
                 'badge' => 'Suggestion',
                 'image' => $dietImages[0],
+                'calorie_target' => null,
+                'price_per_week' => null,
+                'meat_percent' => 0,
+                'fish_percent' => 0,
+                'poultry_percent' => 0,
             ];
         }
 

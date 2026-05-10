@@ -25,9 +25,9 @@
                     </div>
 
                     <nav class="admin-nav d-none d-md-flex gap-2">
-                        <a href="#">Tableau de bord</a>
+                        <a href="<?= site_url('dashboard') ?>">Tableau de bord</a>
                         <a href="<?= site_url('regimes') ?>">Régimes</a>
-                        <a href="#">Activités</a>
+                        <!-- Activités (À venir) -->
                     </nav>
 
                     <div class="d-flex align-items-center gap-2 gap-md-3 admin-topbar-actions">
@@ -45,10 +45,10 @@
 
                 <div class="collapse admin-mobile-nav d-md-none mt-3" id="adminMobileNav">
                     <div class="d-flex flex-wrap gap-2">
-                        <a class="btn btn-sm btn-outline-secondary" href="#">Tableau de bord</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('dashboard') ?>">Tableau de bord</a>
                         <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('regimes') ?>">Régimes</a>
-                        <a class="btn btn-sm btn-outline-secondary" href="#">Activités</a>
-                        <a class="btn btn-sm btn-outline-secondary" href="#">Portefeuille</a>
+                        <!-- Activités bientôt disponibles -->
+                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('wallet') ?>">Portefeuille</a>
                         <a class="btn btn-sm btn-outline-secondary"
                             href="<?= site_url('auth/logout') ?>">Deconnexion</a>
                     </div>
@@ -64,8 +64,8 @@
             </div>
             <div class="offcanvas-body">
                 <div class="d-grid gap-2">
-                    <a class="btn btn-outline-success rounded-pill text-start" href="#">Tableau de bord</a>
-                    <a class="btn btn-outline-success rounded-pill text-start" href="#">Régimes</a>
+                    <a class="btn btn-outline-success rounded-pill text-start" href="<?= site_url('dashboard') ?>">Tableau de bord</a>
+                    <a class="btn btn-outline-success rounded-pill text-start" href="<?= site_url('regimes') ?>">Régimes</a>
                     <a class="btn btn-outline-success rounded-pill text-start" href="#">Activités</a>
                     <a class="btn btn-outline-success rounded-pill text-start" href="#">Portefeuille</a>
                     <a class="btn btn-outline-success rounded-pill text-start" href="<?= site_url('auth/logout') ?>">Deconnexion</a>

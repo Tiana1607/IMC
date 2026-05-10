@@ -43,9 +43,11 @@ $goldUsersChangePercent = 0;
 
 if ($db = db_connect()) {
     $thisWeekUsers = $db->table('users')
+        ->where('is_admin', 0)
         ->where('created_at >=', date('Y-m-d H:i:s', strtotime('-6 days')))
         ->countAllResults();
     $lastWeekUsers = $db->table('users')
+        ->where('is_admin', 0)
         ->where('created_at <', date('Y-m-d H:i:s', strtotime('-6 days')))
         ->where('created_at >=', date('Y-m-d H:i:s', strtotime('-13 days')))
         ->countAllResults();
@@ -86,10 +88,12 @@ if ($db = db_connect()) {
 
     if ($db->tableExists('users')) {
         $thisWeekGoldUsers = $db->table('users')
+            ->where('is_admin', 0)
             ->where('is_gold', 1)
             ->where('created_at >=', date('Y-m-d H:i:s', strtotime('-6 days')))
             ->countAllResults();
         $lastWeekGoldUsers = $db->table('users')
+            ->where('is_admin', 0)
             ->where('is_gold', 1)
             ->where('created_at <', date('Y-m-d H:i:s', strtotime('-6 days')))
             ->where('created_at >=', date('Y-m-d H:i:s', strtotime('-13 days')))

@@ -139,7 +139,7 @@ class DashboardController extends BaseController
             ];
         }
 
-        $goldUsers = (int) $db->table('users')->where('is_gold', 1)->countAllResults();
+        $goldUsers = (int) $db->table('users')->where('is_admin', 0)->where('is_gold', 1)->countAllResults();
 
         if ($goldUsers === 0) {
             return [
@@ -151,6 +151,7 @@ class DashboardController extends BaseController
         }
 
         $activeGoldUsers = (int) $db->table('users')
+            ->where('is_admin', 0)
             ->where('is_gold', 1)
             ->where('is_active', 1)
             ->countAllResults();
@@ -162,6 +163,7 @@ class DashboardController extends BaseController
             $ltvRow = $db->table('user_regimes ur')
                 ->select('AVG(ur.price_paid) AS avg_ltv')
                 ->join('users u', 'u.id = ur.user_id', 'inner')
+                ->where('u.is_admin', 0)
                 ->where('u.is_gold', 1)
                 ->get()
                 ->getRowArray();
@@ -170,6 +172,7 @@ class DashboardController extends BaseController
         }
 
         $last7DaysGoldLogins = (int) $db->table('users')
+            ->where('is_admin', 0)
             ->where('is_gold', 1)
             ->where('last_login >=', date('Y-m-d H:i:s', strtotime('-6 days')))
             ->countAllResults();
@@ -219,7 +222,7 @@ class DashboardController extends BaseController
         $hasRegimes = $db->tableExists('regimes');
 
         $builder = $db->table('users u')
-            ->select('u.id, u.name, u.email, u.gender, u.height_cm, u.weight_kg, u.age, u.objective, u.imc_value, u.imc_category, u.wallet_balance, u.is_gold, u.is_admin, u.is_active, u.created_at, u.updated_at, u.last_login');
+            ->select('u.id, u.name, u.email, u.gender, u.height_cm, u.weight_kg, u.age, u.objective, u.imc_value, u.imc_category, u.is_gold, u.is_admin, u.is_active, u.created_at, u.updated_at, u.last_login');
 
         if ($hasUserRegimes) {
             $builder->select('ur.is_active AS regime_is_active')
@@ -237,6 +240,14 @@ class DashboardController extends BaseController
                 ->join('regimes r', 'r.id = ur.regime_id', 'left');
         } else {
             $builder->select('NULL AS plan_name', false);
+        }
+
+        // Prefer wallet balance from `wallets` table when available
+        if ($db->tableExists('wallets')) {
+            $builder->select('COALESCE(w.balance, 0) AS wallet_balance', false)
+                ->join('wallets w', 'w.user_id = u.id', 'left');
+        } else {
+            $builder->select('0 AS wallet_balance', false);
         }
 
         $builder->where('u.is_admin', 0);
@@ -320,6 +331,7 @@ class DashboardController extends BaseController
         if ($db->tableExists('users')) {
             $inscriptions = $db->table('users')
                 ->select("DATE(created_at) as signup_date, COUNT(id) as total_signups")
+                ->where('is_admin', 0)
                 ->where('created_at >=', date('Y-m-d H:i:s', strtotime('-6 days')))
                 ->groupBy("DATE(created_at)")
                 ->get()

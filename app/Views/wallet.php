@@ -27,7 +27,6 @@
                     <nav class="admin-nav d-none d-md-flex gap-2">
                         <a href="<?= site_url('dashboard') ?>">Tableau de bord</a>
                         <a href="<?= site_url('regimes') ?>">Régimes</a>
-                        <!-- Activités (À venir) -->
                     </nav>
 
                     <div class="d-flex align-items-center gap-2 gap-md-3 admin-topbar-actions">
@@ -45,10 +44,11 @@
 
                 <div class="collapse admin-mobile-nav d-md-none mt-3" id="adminMobileNav">
                     <div class="d-flex flex-wrap gap-2">
-                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('dashboard') ?>">Tableau de bord</a>
-                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('regimes') ?>">Régimes</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('/dashboard') ?>">Tableau de
+                            bord</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('/regimes') ?>">Régimes</a>
                         <!-- Activités bientôt disponibles -->
-                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('wallet') ?>">Portefeuille</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="<?= site_url('/wallet') ?>">Portefeuille</a>
                         <a class="btn btn-sm btn-outline-secondary"
                             href="<?= site_url('auth/logout') ?>">Deconnexion</a>
                     </div>
@@ -76,15 +76,16 @@
         <div class="wallet-shell d-flex">
             <aside class="wallet-sidebar d-none d-md-flex flex-column position-fixed top-0 bottom-0">
                 <div class="pt-5 px-3" style="padding-top: 5.2rem !important;">
-                        <?php
-                        $uri = service('uri');
-                        $currentPath = strtolower(trim($uri->getPath(), '/'));
-                        ?>
+                    <?php
+                    $uri = service('uri');
+                    $currentPath = strtolower(trim($uri->getPath(), '/'));
+                    ?>
                     <div class="d-grid gap-2">
-                            <a class="wallet-sidebar-link <?= ($currentPath === '' || strpos($currentPath, 'admin') === 0) ? 'active' : '' ?>" href="<?= site_url() ?>">
-                                <i class="bi bi-speedometer2"></i>
-                                <span>Tableau de bord</span>
-                            </a>
+                        <a class="wallet-sidebar-link <?= ($currentPath === '' || strpos($currentPath, 'admin') === 0) ? 'active' : '' ?>"
+                            href="<?= site_url('/dashboard') ?>">
+                            <i class="bi bi-speedometer2"></i>
+                            <span>Tableau de bord</span>
+                        </a>
                         <!-- <a class="wallet-sidebar-link" href="#">
                             <i class="bi bi-basket"></i>
                             <span>Régime</span>
@@ -93,9 +94,15 @@
                             <i class="bi bi-heart-pulse"></i>
                             <span>Activités</span>
                         </a> -->
-                        <a class="wallet-sidebar-link <?= strpos($currentPath, 'wallet') !== false ? 'active' : '' ?>" href="<?= site_url('wallet') ?>" aria-current="page">
+                        <a class="wallet-sidebar-link <?= strpos($currentPath, 'wallet') !== false ? 'active' : '' ?>"
+                            href="<?= site_url('wallet') ?>" aria-current="page">
                             <i class="bi bi-wallet2"></i>
                             <span>Portefeuille</span>
+                        </a>
+                        <a class="wallet-sidebar-link <?= strpos($currentPath, 'profile') !== false ? 'active' : '' ?>"
+                            href="<?= site_url('profile/view') ?>">
+                            <i class="bi bi-person-circle"></i>
+                            <span>Mon profil</span>
                         </a>
                         <a class="wallet-sidebar-link" href="<?= site_url('auth/logout') ?>">
                             <i class="bi bi-box-arrow-right"></i>
@@ -109,11 +116,13 @@
                             <span class="wallet-plan-name"><?= esc($currentPlan ?? 'Standard') ?></span>
                         </div>
                         <?php if (!empty($isGold)): ?>
-                            <button type="button" class="btn btn-success w-100 rounded-pill fw-semibold" disabled>Membre Gold actif</button>
+                            <button type="button" class="btn btn-success w-100 rounded-pill fw-semibold" disabled>Membre
+                                Gold actif</button>
                         <?php else: ?>
                             <form method="post" action="<?= site_url('upgrade-gold') ?>">
                                 <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-success w-100 rounded-pill fw-semibold">Devenir Gold</button>
+                                <button type="submit" class="btn btn-success w-100 rounded-pill fw-semibold">Devenir
+                                    Gold</button>
                             </form>
                         <?php endif; ?>
                     </div>
@@ -150,7 +159,8 @@
                             <div
                                 class="wallet-card wallet-upgrade-card w-100 p-4 p-md-5 d-flex flex-column justify-content-between">
                                 <div class="wallet-card-content">
-                                    <span class="wallet-pill wallet-pill-soft mb-4"><?= esc($offer['label'] ?? 'Offre limitée') ?></span>
+                                    <span
+                                        class="wallet-pill wallet-pill-soft mb-4"><?= esc($offer['label'] ?? 'Offre limitée') ?></span>
                                     <div class="wallet-upgrade-copy">
                                         <h3 class="mb-2"><?= esc($offer['name'] ?? 'Pass Gold') ?></h3>
                                         <p><?= esc($offer['description'] ?? '') ?></p>
@@ -159,15 +169,20 @@
 
                                 <div class="wallet-card-content mt-4 mt-md-0">
                                     <div class="d-flex align-items-end gap-3 mb-4 flex-wrap">
-                                        <div class="wallet-offer-percent"><?= (int) ($offer['discount_percent'] ?? 15) ?>%<br>OFF</div>
+                                        <div class="wallet-offer-percent">
+                                            <?= (int) ($offer['discount_percent'] ?? 15) ?>%<br>OFF
+                                        </div>
                                         <div class="text-white-50 pb-1">sur chaque achat</div>
                                     </div>
                                     <?php if (!empty($isGold)): ?>
-                                        <button type="button" class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3" disabled>Membre Gold actif</button>
+                                        <button type="button" class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3"
+                                            disabled>Membre Gold actif</button>
                                     <?php else: ?>
                                         <form method="post" action="<?= site_url('upgrade-gold') ?>">
                                             <?= csrf_field() ?>
-                                            <button type="submit" class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3"><?= esc($offer['cta_text'] ?? 'Être un membre Gold') ?> </button>
+                                            <button type="submit"
+                                                class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3"><?= esc($offer['cta_text'] ?? 'Être un membre Gold') ?>
+                                            </button>
                                         </form>
                                     <?php endif; ?>
                                 </div>
@@ -183,7 +198,9 @@
                                     <i class="bi bi-gift"></i>
                                     <span><?= esc($promoCardTitle ?? 'Utiliser un code promo') ?></span>
                                 </h4>
-                                <p class="text-secondary mb-3"><?= esc($promoCardDescription ?? 'Entrez votre code ci-dessous pour ajouter des crédits instantanément à votre compte.') ?></p>
+                                <p class="text-secondary mb-3">
+                                    <?= esc($promoCardDescription ?? 'Entrez votre code ci-dessous pour ajouter des crédits instantanément à votre compte.') ?>
+                                </p>
                                 <form method="post" action="<?= site_url('wallet/add-code') ?>">
                                     <?= csrf_field() ?>
                                     <div class="input-group wallet-input-group wallet-promo-row">
@@ -200,12 +217,14 @@
                                 class="wallet-card wallet-summary-card w-100 p-4 d-flex align-items-center justify-content-around gap-3 flex-wrap">
                                 <div class="text-center">
                                     <div class="wallet-summary-label mb-2">Dépensé ce mois</div>
-                                    <div class="wallet-summary-value red">€<?= number_format($monthlySpent ?? 0, 2) ?></div>
+                                    <div class="wallet-summary-value red">€<?= number_format($monthlySpent ?? 0, 2) ?>
+                                    </div>
                                 </div>
                                 <div class="wallet-divider d-none d-md-block"></div>
                                 <div class="text-center">
                                     <div class="wallet-summary-label mb-2">Économies</div>
-                                    <div class="wallet-summary-value green">€<?= number_format($monthlySavings ?? 0, 2) ?></div>
+                                    <div class="wallet-summary-value green">
+                                        €<?= number_format($monthlySavings ?? 0, 2) ?></div>
                                 </div>
                                 <div class="wallet-divider d-none d-md-block"></div>
                                 <div class="text-center">
@@ -219,7 +238,8 @@
                     <section class="mt-4 mt-md-5" id="transactions">
                         <div class="d-flex align-items-center justify-content-between mb-3 wallet-table-header">
                             <h3 class="wallet-section-title mb-0">Historique des transactions</h3>
-                            <a href="<?= site_url('wallet') ?>#transactions" class="wallet-view-all">Voir tout (<?= (int) ($totalTransactions ?? 0) ?>)</a>
+                            <a href="<?= site_url('wallet') ?>#transactions" class="wallet-view-all">Voir tout
+                                (<?= (int) ($totalTransactions ?? 0) ?>)</a>
                         </div>
 
                         <div class="wallet-card wallet-table-card p-2 p-md-3 d-none d-md-block">
@@ -250,14 +270,17 @@
                                                             <?php endif; ?>
                                                             <div>
                                                                 <div class="wallet-transaction-title">
-                                                                    <?= esc($t['description']) ?></div>
+                                                                    <?= esc($t['description']) ?>
+                                                                </div>
                                                                 <div class="wallet-transaction-subtitle">
-                                                                    <?= $t['type'] === 'credit' ? 'Crédit' : 'Achat' ?></div>
+                                                                    <?= $t['type'] === 'credit' ? 'Crédit' : 'Achat' ?>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="text-secondary">
-                                                        <?= $t['date'] ? date('d M, Y', strtotime($t['date'])) : '' ?></td>
+                                                        <?= $t['date'] ? date('d M, Y', strtotime($t['date'])) : '' ?>
+                                                    </td>
                                                     <td><span
                                                             class="wallet-status"><?= $t['status'] === 'active' ? 'Actif' : 'Terminé' ?></span>
                                                     </td>
@@ -295,7 +318,8 @@
                                             <div class="flex-grow-1">
                                                 <div class="wallet-transaction-title"><?= esc($t['description']) ?></div>
                                                 <div class="wallet-transaction-subtitle">
-                                                    <?= $t['type'] === 'credit' ? 'Récompense promo' : 'Achat' ?></div>
+                                                    <?= $t['type'] === 'credit' ? 'Récompense promo' : 'Achat' ?>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-baseline justify-content-between gap-2 mb-2">
@@ -305,7 +329,8 @@
                                                 class="wallet-status"><?= $t['status'] === 'active' ? 'Actif' : 'Terminé' ?></span>
                                         </div>
                                         <div class="text-secondary small">
-                                            <?= $t['date'] ? date('d M, Y', strtotime($t['date'])) : '' ?></div>
+                                            <?= $t['date'] ? date('d M, Y', strtotime($t['date'])) : '' ?>
+                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                             <?php else: ?>

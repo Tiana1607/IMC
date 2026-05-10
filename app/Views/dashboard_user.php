@@ -173,9 +173,9 @@ $activities = $activities ?? [
 
             <div class="collapse admin-mobile-nav d-md-none mt-3" id="adminMobileNav">
                 <div class="d-flex flex-wrap gap-2">
-                    <a href="<?= site_url() ?>" class="btn btn-sm btn-outline-secondary">Tableau de bord</a>
+                    <a href="<?= site_url('/dashboard') ?>" class="btn btn-sm btn-outline-secondary">Tableau de bord</a>
                     <a href="<?= site_url('regimes') ?>" class="btn btn-sm btn-outline-secondary">Régimes</a>
-                    <a href="<?= site_url('wallet') ?>" class="btn btn-sm btn-outline-secondary">Portefeuille</a>
+                    <a href="<?= site_url('/wallet') ?>" class="btn btn-sm btn-outline-secondary">Portefeuille</a>
                     <a href="<?= site_url('auth/logout') ?>" class="btn btn-sm btn-outline-secondary">Déconnexion</a>
                 </div>
             </div>

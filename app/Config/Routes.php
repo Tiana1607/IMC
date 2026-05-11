@@ -37,24 +37,26 @@ $routes->post('profile/update', 'ProfileController::update', ['filter' => 'auth'
 $routes->get('wallet', 'WalletController::index', ['filter' => 'auth']);
 $routes->post('wallet/add-code', 'WalletController::addCode', ['filter' => 'auth']);
 $routes->post('upgrade-gold', 'WalletController::upgradeGold', ['filter' => 'auth']);
+// PDF Export
+$routes->get('export/recommendations', 'PdfController::exportRecommendations', ['filter' => 'auth']);
 // Admin routes
 // Regime purchase
 $routes->get('regimes', 'RegimeController::catalog', ['filter' => 'auth']);
 $routes->post('regime/(:num)/purchase', 'RegimeController::purchase/$1', ['filter' => 'auth']);
 
 // Admin routes
-$routes->get('admin', 'Admin\\DashboardController::index', ['filter' => 'auth']);
-$routes->post('admin', 'Admin\\DashboardController::index', ['filter' => 'auth']);
-$routes->get('admin/ajax_activities', 'Admin\\DashboardController::ajaxActivities', ['filter' => 'auth']);
+$routes->get('admin', 'Admin\\DashboardController::index', ['filter' => 'admin']);
+$routes->post('admin', 'Admin\\DashboardController::index', ['filter' => 'admin']);
+$routes->get('admin/ajax_activities', 'Admin\\DashboardController::ajaxActivities', ['filter' => 'admin']);
 
-$routes->get('admin/regimes', 'Admin\\RegimeController::index', ['filter' => 'auth']);
-$routes->post('admin/regimes', 'Admin\\RegimeController::store', ['filter' => 'auth']);
-$routes->get('admin/regimes/(:num)', 'Admin\\RegimeController::edit/$1', ['filter' => 'auth']);
-$routes->post('admin/regimes/(:num)', 'Admin\\RegimeController::update/$1', ['filter' => 'auth']);
-$routes->delete('admin/regimes/(:num)', 'Admin\\RegimeController::delete/$1', ['filter' => 'auth']);
+$routes->get('admin/regimes', 'Admin\\RegimeController::index', ['filter' => 'admin']);
+$routes->post('admin/regimes', 'Admin\\RegimeController::store', ['filter' => 'admin']);
+$routes->get('admin/regimes/(:num)', 'Admin\\RegimeController::edit/$1', ['filter' => 'admin']);
+$routes->post('admin/regimes/(:num)', 'Admin\\RegimeController::update/$1', ['filter' => 'admin']);
+$routes->delete('admin/regimes/(:num)', 'Admin\\RegimeController::delete/$1', ['filter' => 'admin']);
 
-$routes->get('admin/activities', 'Admin\\ActivityController::index', ['filter' => 'auth']);
-$routes->post('admin/activities', 'Admin\\ActivityController::store', ['filter' => 'auth']);
-$routes->get('admin/activities/(:num)', 'Admin\\ActivityController::edit/$1', ['filter' => 'auth']);
-$routes->post('admin/activities/(:num)', 'Admin\\ActivityController::update/$1', ['filter' => 'auth']);
-$routes->delete('admin/activities/(:num)', 'Admin\\ActivityController::delete/$1', ['filter' => 'auth']);
+$routes->get('admin/activities', 'Admin\\ActivityController::index', ['filter' => 'admin']);
+$routes->post('admin/activities', 'Admin\\ActivityController::store', ['filter' => 'admin']);
+$routes->get('admin/activities/(:num)', 'Admin\\ActivityController::edit/$1', ['filter' => 'admin']);
+$routes->post('admin/activities/(:num)', 'Admin\\ActivityController::update/$1', ['filter' => 'admin']);
+$routes->delete('admin/activities/(:num)', 'Admin\\ActivityController::delete/$1', ['filter' => 'admin']);

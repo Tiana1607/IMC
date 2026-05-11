@@ -227,9 +227,11 @@ INSERT INTO users (
     imc_value, imc_category, wallet_balance, is_gold, is_admin, is_active, last_login,
     created_at, updated_at
 ) VALUES
-    (1, 'admin@gmail.com', '$2y$10$qPKSGNHqdvgaktg15LaNzuABodUnWVMXt3K0/kZJLzF5dOPpCIk8O', 'admin', 'M', 158.00, 52.00, 19, 'imc_ideal', 20.83, 'Normal', 0.00, 0, 1, 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
-    (2, 'rova@gmail.com', '$2y$10$Gkuz37RtEd6DTQKLcg/8nusiEm05BDdUSXzGe6MXdHfxA2NUPiBY6', 'rova', 'F', 163.00, 52.00, 19, 'imc_ideal', 19.57, 'Normal', 0.00, 0, 0, 1, '2026-05-09 10:38:23', '2026-05-09 10:38:23', '2026-05-09 10:38:23'),
-    (3, 'jeremie@gmail.com', '$2y$10$vLL56xljlTACEjOjt5kwG.GbZNB4RQJG/4widNGNE1ReTYzspETkW', 'jeremie', 'M', 170.00, 48.00, 23, 'augmenter_poids', 16.61, 'Sous-poids', 0.00, 0, 0, 1, '2026-05-09 15:50:06', '2026-05-09 15:50:06', '2026-05-09 15:50:06');
+    (1, 'admin@gmail.com', '$2y$10$4f5grljIYI7uX9WDcNQa7eHGz/V1geYAsIdjICFgdHVosd8kzAfZm', 'admin', 'M', 158.00, 52.00, 19, 'imc_ideal', 20.83, 'Normal', 0.00, 0, 1, 1, '2026-05-10 07:20:18', '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (2, 'rova@gmail.com', '$2y$10$chENiDiRk5W6R256rdA.j.Dja1As.dC.s.UDwd.DwQO2S9gnzGcxm', 'rova', 'F', 163.00, 52.00, 19, 'imc_ideal', 19.57, 'Normal', 0.00, 0, 0, 1, '2026-05-09 10:38:23', '2026-05-09 10:38:23', '2026-05-09 10:38:23'),
+    (3, 'jeremie@gmail.com', '$2y$10$u0fPHbKSKhI6HPrcTRJXmuJ3QGB9vMDk13hQGqlFnkefGAP6CTZ26', 'jeremie', 'M', 170.00, 48.00, 23, 'augmenter_poids', 16.61, 'Sous-poids', 0.00, 0, 0, 1, '2026-05-09 15:50:06', '2026-05-09 15:50:06', '2026-05-09 15:50:06'),
+    (4, 'sarah@gmail.com', '$2y$10$.j5UiT0UHBfa.Fk3qMhO7ORvtyJQLmyHngBWBP8i5bjdxe7xhsGUC', 'sarah', 'F', 168.00, 74.00, 27, 'reduire_poids', 26.22, 'Surpoids', 0.00, 0, 0, 1, NULL, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
+    (5, 'mine@gmail.com', '$2y$10$gSu4v/1m3.FyfjCncc4F4OsXO3C4mmlAqwDsS4rz7hDqHVMkiK5h6', 'mine', 'M', 182.00, 66.00, 25, 'augmenter_poids', 19.92, 'Normal', 0.00, 0, 0, 1, NULL, '2026-05-10 07:20:18', '2026-05-10 07:20:18');
 
 -- ============================================================================
 -- DATA REGIMES
@@ -275,7 +277,18 @@ INSERT INTO promo_codes (
     (1, 'WELCOME5', 5.00, 0, NULL, NULL, 'Welcome bonus', NULL, '2026-05-10 07:20:18'),
     (2, 'VITAL-10', 10.00, 0, NULL, NULL, 'Promo 10€', NULL, '2026-05-10 07:20:18'),
     (3, 'GIFT50', 50.00, 0, NULL, NULL, 'Grand cadeau', NULL, '2026-05-10 07:20:18'),
-    (4, 'USED-TEST', 20.00, 1, 2, '2026-05-09 13:20:18', 'Used by test user', NULL, '2026-05-10 07:20:18');
+    (4, 'USED-TEST', 20.00, 1, 2, '2026-05-09 13:20:18', 'Used by test user', NULL, '2026-05-10 07:20:18'),
+    (5, 'START-15', 15.00, 0, NULL, NULL, 'Bonus demarrage', NULL, '2026-05-10 07:20:18'),
+    (6, 'MOVE-05', 5.00, 0, NULL, NULL, 'Code activite', NULL, '2026-05-10 07:20:18'),
+    (7, 'FIT-20', 20.00, 0, NULL, NULL, 'Code fitness', NULL, '2026-05-10 07:20:18'),
+    (8, 'HEALTH-25', 25.00, 0, NULL, NULL, 'Code sante', NULL, '2026-05-10 07:20:18'),
+    (9, 'BOOST-30', 30.00, 0, NULL, NULL, 'Boost portefeuille', NULL, '2026-05-10 07:20:18'),
+    (10, 'CARDIO-08', 8.00, 0, NULL, NULL, 'Code cardio', NULL, '2026-05-10 07:20:18'),
+    (11, 'MUSCU-12', 12.00, 0, NULL, NULL, 'Code musculation', NULL, '2026-05-10 07:20:18'),
+    (12, 'ZEN-07', 7.00, 0, NULL, NULL, 'Code bien-etre', NULL, '2026-05-10 07:20:18'),
+    (13, 'PLUS-18', 18.00, 0, NULL, NULL, 'Recharge plus', NULL, '2026-05-10 07:20:18'),
+    (14, 'POWER-22', 22.00, 0, NULL, NULL, 'Code puissance', NULL, '2026-05-10 07:20:18'),
+    (15, 'SPRING-11', 11.00, 0, NULL, NULL, 'Offre saisonniere', NULL, '2026-05-10 07:20:18');
 
 -- ============================================================================
 -- DATA WALLETS
@@ -287,3 +300,9 @@ INSERT INTO wallets (
     (2, 2, 100.00, '2026-05-10 07:20:18', '2026-05-10 07:20:18'),
     (3, 3, 10.00, '2026-05-10 07:20:18', '2026-05-10 07:20:18');
 
+-- Email                     | Mot de passe\n------------------------------------------------------------
+-- admin@gmail.com           | AdminVital2026
+-- rova@gmail.com            | RovaVital2026
+-- jeremie@gmail.com         | JeremieVital2026
+-- sarah@gmail.com           | SarahVital2026
+-- mine@gmail.com            | MineVital2026

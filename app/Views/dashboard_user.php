@@ -212,9 +212,19 @@ $activities = $activities ?? [
                     <?php if (!empty($isGold)): ?>
                         <button type="button" class="btn btn-success w-100 rounded-pill fw-semibold" disabled>Membre Gold actif</button>
                     <?php else: ?>
+                        <?php 
+                            $goldPrice = $goldPrice ?? 49.0;
+                            $balance = $walletBalance ?? 0;
+                            $canUpgrade = $balance >= $goldPrice;
+                            $missing = max(0, $goldPrice - $balance);
+                        ?>
                         <form method="post" action="<?= site_url('upgrade-gold') ?>">
                             <?= csrf_field() ?>
-                            <button type="submit" class="btn btn-success w-100 rounded-pill fw-semibold">Devenir Gold</button>
+                            <button type="submit" 
+                                    class="btn <?= $canUpgrade ? 'btn-success' : 'btn-secondary' ?> w-100 rounded-pill fw-semibold" 
+                                    <?= !$canUpgrade ? 'disabled' : '' ?>>
+                                <?= $canUpgrade ? 'Devenir Gold ⭐' : 'Solde insuffisant (-€' . number_format($missing, 2) . ')' ?>
+                            </button>
                         </form>
                     <?php endif; ?>
                 </div>
@@ -253,7 +263,7 @@ $activities = $activities ?? [
                         <div class="card-section h-100">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h2 class="section-title m-0">Régimes recommandés</h2>
-                                <a href="<?= site_url('wallet') ?>" class="wallet-view-all">Voir tout</a>
+                                <a href="<?= site_url('regimes') ?>" class="wallet-view-all">Voir tout</a>
                             </div>
                             <div class="row g-3">
                                 <div class="col-12">

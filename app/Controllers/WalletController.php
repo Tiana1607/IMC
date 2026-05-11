@@ -129,6 +129,8 @@ class WalletController extends BaseController
             'promoCardTitle' => $promoCardTitle,
             'promoCardDescription' => $promoCardDescription,
             'isGold' => (int) ($user['is_gold'] ?? 0) === 1,
+            'walletBalance' => $balance,
+            'goldPrice' => self::GOLD_PRICE,
         ]);
     }
 
@@ -194,7 +196,7 @@ class WalletController extends BaseController
         }
 
         if ((int) ($user['is_gold'] ?? 0) === 1) {
-            $this->session->setFlashdata('success', 'Vous êtes déjà membre Gold.');
+            $this->session->setFlashdata('info', 'Vous êtes déjà membre Gold.');
             return redirect()->back();
         }
 
@@ -203,7 +205,7 @@ class WalletController extends BaseController
 
         if ($balance < self::GOLD_PRICE) {
             $missing = self::GOLD_PRICE - $balance;
-            $this->session->setFlashdata('error', 'Solde insuffisant pour Gold. Il manque €' . number_format($missing, 2) . '.');
+            $this->session->setFlashdata('error', '⚠️ Solde insuffisant. Il manque €' . number_format($missing, 2) . ' pour devenir Gold.');
             return redirect()->back();
         }
 
@@ -215,7 +217,7 @@ class WalletController extends BaseController
         $db->table('users')->where('id', $userId)->update(['is_gold' => 1]);
         $this->session->set('is_gold', 1);
 
-        $this->session->setFlashdata('success', 'Félicitations, vous êtes maintenant membre Gold (-15% sur les régimes).');
+        $this->session->setFlashdata('success', '🎉 Félicitations, vous êtes maintenant membre Gold (-15% sur les régimes)!');
         return redirect()->back();
     }
 }

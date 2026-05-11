@@ -119,10 +119,19 @@
                             <button type="button" class="btn btn-success w-100 rounded-pill fw-semibold" disabled>Membre
                                 Gold actif</button>
                         <?php else: ?>
+                            <?php 
+                                $goldPrice = $goldPrice ?? 49.0;
+                                $balance = $walletBalance ?? 0;
+                                $canUpgrade = $balance >= $goldPrice;
+                                $missing = max(0, $goldPrice - $balance);
+                            ?>
                             <form method="post" action="<?= site_url('upgrade-gold') ?>">
                                 <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-success w-100 rounded-pill fw-semibold">Devenir
-                                    Gold</button>
+                                <button type="submit" 
+                                        class="btn <?= $canUpgrade ? 'btn-success' : 'btn-secondary' ?> w-100 rounded-pill fw-semibold" 
+                                        <?= !$canUpgrade ? 'disabled' : '' ?>>
+                                    <?= $canUpgrade ? 'Devenir Gold ⭐' : 'Solde insuffisant (-€' . number_format($missing, 2) . ')' ?>
+                                </button>
                             </form>
                         <?php endif; ?>
                     </div>
@@ -178,10 +187,18 @@
                                         <button type="button" class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3"
                                             disabled>Membre Gold actif</button>
                                     <?php else: ?>
+                                        <?php 
+                                            $goldPrice = $goldPrice ?? 49.0;
+                                            $balance = $walletBalance ?? 0;
+                                            $canUpgrade = $balance >= $goldPrice;
+                                            $missing = max(0, $goldPrice - $balance);
+                                        ?>
                                         <form method="post" action="<?= site_url('upgrade-gold') ?>">
                                             <?= csrf_field() ?>
                                             <button type="submit"
-                                                class="btn wallet-btn wallet-btn-gold w-100 rounded-4 py-3"><?= esc($offer['cta_text'] ?? 'Être un membre Gold') ?>
+                                                    class="btn wallet-btn <?= $canUpgrade ? 'wallet-btn-gold' : 'btn-secondary' ?> w-100 rounded-4 py-3"
+                                                    <?= !$canUpgrade ? 'disabled' : '' ?>>
+                                                <?= $canUpgrade ? (esc($offer['cta_text'] ?? 'Être un membre Gold')) : 'Solde insuffisant (-€' . number_format($missing, 2) . ')' ?>
                                             </button>
                                         </form>
                                     <?php endif; ?>

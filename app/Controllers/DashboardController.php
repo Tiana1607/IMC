@@ -162,7 +162,7 @@ class DashboardController extends BaseController
         }
 
         $activities = [];
-        foreach (array_slice($recommendedActivities, 0, 4) as $index => $activity) {
+        foreach (array_slice($recommendedActivities, 0, 2) as $index => $activity) {
             $duration = match ((string) ($activity['intensity'] ?? 'medium')) {
                 'low' => '15 MIN',
                 'high' => '30 MIN',
@@ -194,6 +194,7 @@ class DashboardController extends BaseController
             'userName' => $user['name'] ?? 'Utilisateur',
             'objectiveLabel' => $objectiveLabel,
             'walletBalance' => $walletBalance,
+            'goldPrice' => 49.0,
             'imc' => $imc,
             'imcCategory' => $imcCategory,
             'height' => $user['height_cm'] ?? null,

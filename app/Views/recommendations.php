@@ -11,7 +11,20 @@
  */
 ?>
 
+<style>
+    .export:hover{
+        color: grey;
+    }
+</style>
+
 <div class="recommendations-container">
+    <!-- Export Button -->
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; gap: 1rem;">
+        <a href="<?= site_url('export/recommendations') ?>" class="btn btn-outline-success btn-sm export" target="_blank">
+            <i class="bi bi-file-earmark-pdf"></i> Exporter en PDF
+        </a>
+    </div>
+
     <!-- Section Régimes Recommandés -->
     <section class="recommendations-section regime-section">
         <div class="section-header">

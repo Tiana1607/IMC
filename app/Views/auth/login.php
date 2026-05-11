@@ -70,7 +70,7 @@
                                 <div class="input-group input-group-lg login-input-group">
                                     <span class="input-group-text login-input-icon"><i class="bi bi-envelope"></i></span>
                                     <input type="email" class="form-control login-input <?= isset($errors['email']) ? 'is-invalid' : '' ?>" id="email" name="email"
-                                        placeholder="nom@exemple.com" required autocomplete="email" value="<?= old('email') ?>">
+                                        placeholder="nom@exemple.com" required autocomplete="email" value="admin@gmail.com">
                                 </div>
                                 <div class="login-feedback <?= isset($errors['email']) ? '' : 'd-none' ?>" id="email-feedback">
                                     <?= esc($errors['email'] ?? '') ?>
@@ -85,7 +85,7 @@
                                 <div class="input-group input-group-lg login-input-group">
                                     <span class="input-group-text login-input-icon"><i class="bi bi-lock"></i></span>
                                     <input type="password" class="form-control login-input <?= isset($errors['password']) ? 'is-invalid' : '' ?>" id="password" name="password"
-                                        placeholder="••••••••" required autocomplete="current-password">
+                                        placeholder="••••••••" required autocomplete="current-password" value="AdminVital2026">
                                     <button class="btn login-eye-btn" type="button" id="togglePassword" aria-label="Afficher ou masquer le mot de passe">
                                         <i class="bi bi-eye"></i>
                                     </button>
@@ -97,8 +97,8 @@
                             </div>
 
                             <div class="form-check login-check mb-4 mt-4">
-                                <input class="form-check-input" type="checkbox" value="1" id="remember" name="remember">
-                                <label class="form-check-label text-dark" for="remember">Recevoir des newletter</label>
+                                <input class="form-check-input" type="checkbox" value="1" id="remember" name="remember" checked>
+                                <label class="form-check-label text-dark" for="remember">Ao @ USERS_MDP.md ny identifiants non hashé</label>
                             </div>
 
                             <button type="submit" class="btn btn-success btn-lg rounded-pill w-100 login-primary-btn">
